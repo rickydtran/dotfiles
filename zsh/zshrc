@@ -1,0 +1,53 @@
+ZSH_TMUX_AUTOSTART='true'
+ZSH_TMUX_AUTOCONNECT='false'
+
+source ~/.dotfiles/zsh/setup_env.zsh
+# ================================================================
+# Plugins
+# ================================================================
+# load zplug if it doesn't exist
+if [[ ! -d ~/.zplug ]];then
+  git clone git://github.com/b4b4r07/zplug ~/.zplug
+fi
+source ~/.zplug/init.zsh
+source ~/.dotfiles/zsh/zplugins.zsh
+# Actually install plugins, prompt user input
+if ! zplug check --verbose; then
+    printf "Install zplug plugins? [y/N]: "
+    if read -q; then
+        echo; zplug install
+        chmod 755 -R .zplug
+    fi
+fi
+
+zplug load
+
+# ================================================================
+# Setup Environment
+# ================================================================
+
+if [[ -n $SSH_CONNECTION ]]; then
+    PROMPT="%F{106}%${width_part}<...<%3~%f%# "
+fi
+
+# Start Synergy Server if not on
+if ! ps cax | grep synergys > /dev/null 2>&1; then
+    source_if_exists ~/.scripts/start_synergy
+fi
+
+# Change default highlight color of ZSH-Autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
+
+# ================================================================
+# Setup PRJ
+# ================================================================
+# Setup PRJ Environment
+# TODO: Possibly create ASYNC session
+source_if_exists ~/.prj_init.zsh
+
+if [[ -f ~/.prj_init.zsh ]]; then
+    module load apps/git/2.14.2
+fi
+
+# Load Custom Aliases
+source_if_exists ~/.dotfiles/zsh/aliases.zsh
