@@ -43,9 +43,9 @@ colorscheme onedark
 " set noeb vb t_vb= " Disables chime
 set noerrorbells novisualbell " Turn off visual and audbile bells
 set nobackup nowritebackup noswapfile " Turn off backup files
-" set nowrap " Don't wrap long lines
-" set listchars=extends:→ " Show arrow if line continues rightwards
-" set listchars+=precedes:← " Show arrow if line continues leftwards
+set nowrap " Don't wrap long lines
+set listchars=extends:→ " Show arrow if line continues rightwards
+set listchars+=precedes:← " Show arrow if line continues leftwards
 set laststatus=2 " Show status line on startup
 set autoread " Auto reload changed files
 set wildmenu " Tab autocmplete in command mode
@@ -57,13 +57,13 @@ set lazyredraw " Reduce redraw frequency
 set ttyfast " Send more chracters in fast terminals
 set autoindent " auto indent
 set expandtab " Use spaces
-set shiftwidth=2 " 2 spaces for tab
-set tabstop=2 " 2 spaces for tab
+set shiftwidth=4 " 4 spaces for tab
+set tabstop=4 " 4 spaces for tab
 set hlsearch " Highlight search results
 set ignorecase smartcase " Search queries intelligently set case
 set incsearch " Show Results as you type
 set number " Line numbers
-set cursorline " Highlight current line
+" set cursorline " Highlight current line
 set showcmd " Show size of visual selection
 
 " Syntastic Settings

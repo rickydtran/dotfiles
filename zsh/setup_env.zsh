@@ -19,6 +19,7 @@ path_if_exists() {
 # ================================================================
 # Set UMASK to 002
 umask 002
+export LANG=en_US.UTF-8
 export TERM=xterm-256color
 export SHELL='zsh'
 export PATH=$HOME/.apps/zsh/bin:$PATH
