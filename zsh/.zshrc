@@ -159,6 +159,7 @@ alias tree='tree -a -I .git'
 
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} --color=auto -A"
+alias ll="${aliases[ls]:-ls} --color=auto -lA"
 
 # Clear to Bottom
 alias clear=z4h-clear-screen-soft-bottom
