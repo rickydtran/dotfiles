@@ -43,7 +43,7 @@ zstyle ':z4h:ssh:metal-*'             enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
+zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh' '~/.vimrc' '~/.tmux.conf'
 
 # Clone additional Git repositories from GitHub.
 #
