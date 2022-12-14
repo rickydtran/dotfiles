@@ -11,7 +11,7 @@ zstyle ':z4h:' auto-update      'no'
 zstyle ':z4h:' auto-update-days '28'
 
 # Keyboard type: 'mac' or 'pc'.
-zstyle ':z4h:bindkey' keyboard  'mac'
+zstyle ':z4h:bindkey' keyboard  'pc'
 
 # Don't start tmux.
 zstyle ':z4h:' start-tmux       no
@@ -132,8 +132,8 @@ z4h source ~/.env.zsh
 # Use additional Git repositories pulled in with `z4h install`.
 #
 # This is just an example that you should delete. It does nothing useful.
-z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
-z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
+# z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
+# z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
 
 # Define key bindings.
 z4h bindkey undo Ctrl+/   Shift+Tab  # undo the last command line change
@@ -158,8 +158,36 @@ compdef _directories md
 alias tree='tree -a -I .git'
 
 # Add flags to existing aliases.
-alias ls="${aliases[ls]:-ls} --color=auto -A"
-alias ll="${aliases[ls]:-ls} --color=auto -lA"
+alias ls="${aliases[ls]:-ls} -x --color=auto --group-directories-first"
+alias la="${aliases[ls]:-ls} -Ax --color=auto --group-directories-first"
+alias ll="${aliases[ls]:-ls} -l --color=auto --group-directories-first"
+alias lll="${aliases[ls]:-ls} -lA --color=auto --group-directories-first"
+
+# "fancy" diffs
+function dsf() { diff -u "$1" "$2" | delta; }
+
+# the following makes sure that ssh-agent runs for each shell
+# this is necessary for git access with key files.
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+    echo "Initialising new SSH agent..."
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent;
+fi
 
 # Clear to Bottom
 alias clear=z4h-clear-screen-soft-bottom
