@@ -158,11 +158,17 @@ compdef _directories md
 alias tree='tree -a -I .git'
 
 # Add flags to existing aliases.
-alias ls="${aliases[ls]:-ls} -x --color=auto --group-directories-first"
-alias la="${aliases[ls]:-ls} -Ax --color=auto --group-directories-first"
-alias ll="${aliases[ls]:-ls} -l --color=auto --group-directories-first"
-alias lll="${aliases[ls]:-ls} -lA --color=auto --group-directories-first"
-
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias ls="${aliases[ls]:-ls} -x --color=auto --group-directories-first"
+    alias la="${aliases[ls]:-ls} -ax --color=auto --group-directories-first"
+    alias ll="${aliases[ls]:-ls} -l --color=auto --group-directories-first"
+    alias lll="${aliases[ls]:-ls} -lA --color=auto --group-directories-first"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    alias ls="${aliases[gls]:-gls} -x --color=auto --group-directories-first"
+    alias la="${aliases[gls]:-gls} -ax --color=auto --group-directories-first"
+    alias ll="${aliases[gls]:-gls} -l --color=auto --group-directories-first"
+    alias lll="${aliases[gls]:-gls} -lA --color=auto --group-directories-first"
+fi
 # "fancy" diffs
 function dsf() { diff -u "$1" "$2" | delta; }
 
