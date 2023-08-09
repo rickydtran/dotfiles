@@ -37,9 +37,10 @@ zstyle ':z4h:ssh:example-hostname1'   enable 'yes'
 zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'no'
-zstyle ':z4h:ssh:RTd*'                enable 'yes'
-zstyle ':z4h:ssh:RTu*'                enable 'yes'
+zstyle ':z4h:ssh:*core*'              enable 'yes'
+zstyle ':z4h:ssh:*agent*'             enable 'yes'
 zstyle ':z4h:ssh:metal-*'             enable 'yes'
+zstyle ':z4h:ssh:testgpu-*'           enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
@@ -88,8 +89,10 @@ function z4h-ssh-configure() {
   # Figure out what kind of machine we are about to connect to.
   local machine_tag
   case $z4h_ssh_host in
-    ec2-*) machine_tag=ec2;;
-    *)     machine_tag=$z4h_ssh_host;;
+    ec2-*)   machine_tag=ec2;;
+    *core*)  machine_tag=swxtch-core;;
+    *agent*) machine_tag=swxtch-agent;;
+    *)       machine_tag=$z4h_ssh_host;;
   esac
 
   # This is where we are locally keeping command history
@@ -156,6 +159,7 @@ compdef _directories md
 
 # Define aliases.
 alias tree='tree -a -I .git'
+alias setup_workspace='tmux new -s dev -d; tmux new -s test -d; tmux ls'
 
 # Add flags to existing aliases.
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -172,29 +176,6 @@ fi
 # "fancy" diffs
 function dsf() { diff -u "$1" "$2" | delta; }
 
-# the following makes sure that ssh-agent runs for each shell
-# this is necessary for git access with key files.
-SSH_ENV="$HOME/.ssh/environment"
-
-function start_agent {
-    echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-    /usr/bin/ssh-add;
-}
-
-# Source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
-fi
-
 # Clear to Bottom
 alias clear=z4h-clear-screen-soft-bottom
 
@@ -204,3 +185,15 @@ zstyle ':z4h:ssh-agent:' extra-args -t 20h
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
+
+# list tmux status
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+    if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+        echo "vscode dectected. running standard shell."
+    elif tmux has &> /dev/null; then
+        echo "\ntmux sessions:"
+        tmux ls
+    else
+        echo "\ntmux not running!"
+    fi
+fi
