@@ -173,8 +173,40 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     alias ll="${aliases[gls]:-gls} -l --color=auto --group-directories-first"
     alias lll="${aliases[gls]:-gls} -lA --color=auto --group-directories-first"
 fi
+
+
 # "fancy" diffs
 function dsf() { diff -u "$1" "$2" | delta; }
+
+# submodule update
+git_submodules_update() {
+    git submodule sync --recursive
+    git submodule update --init --force --recursive
+    git submodule foreach --recursive git clean -ffdx
+}
+
+# fetch all tags and branches
+git_fetch_all() {
+    git branch -r | grep -v '\->' | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
+    git fetch --all
+    git pull --all
+}
+
+# nuke all branches other than default branch
+git_clean_branches() {
+    def_branch=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+    git branch | grep -v "^\* $def_branch" | xargs -n 1 -r git branch -D
+}
+
+# nuke and clean git repo
+git_clean_repo() {
+    git reset --hard
+    git_clean_branches
+    git submodule sync --recursive
+    git submodule update --init --force --recursive
+    git clean -ffdx
+    git submodule foreach --recursive git clean -ffdx
+}
 
 # Clear to Bottom
 alias clear=z4h-clear-screen-soft-bottom
