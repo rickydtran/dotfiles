@@ -11,7 +11,11 @@ zstyle ':z4h:' auto-update      'no'
 zstyle ':z4h:' auto-update-days '28'
 
 # Keyboard type: 'mac' or 'pc'.
-zstyle ':z4h:bindkey' keyboard  'pc'
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    zstyle ':z4h:bindkey' keyboard  'mac'
+else
+    zstyle ':z4h:bindkey' keyboard  'pc'
+fi
 
 # Don't start tmux.
 zstyle ':z4h:' start-tmux       no
