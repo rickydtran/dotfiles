@@ -94,8 +94,8 @@ function z4h-ssh-configure() {
   local machine_tag
   case $z4h_ssh_host in
     ec2-*)   machine_tag=ec2;;
-    *core*)  machine_tag=swxtch-core;;
-    *agent*) machine_tag=swxtch-agent;;
+    *core*)  machine_tag=core;;
+    *agent*) machine_tag=agent;;
     *)       machine_tag=$z4h_ssh_host;;
   esac
 
