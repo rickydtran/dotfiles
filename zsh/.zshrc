@@ -27,8 +27,8 @@ zstyle ':z4h:' term-shell-integration 'yes'
 zstyle ':z4h:' propagate-cwd yes
 
 # Autostart ssh-agent
-zstyle ':z4h:ssh-agent:' start      yes
-zstyle ':z4h:ssh-agent:' extra-args -t 20h
+# zstyle ':z4h:ssh-agent:' start      yes
+# zstyle ':z4h:ssh-agent:' extra-args -t 20h
 
 # Right-arrow key accepts one character ('partial-accept') from
 # command autosuggestions or the whole thing ('accept')?
@@ -70,8 +70,25 @@ z4h install ohmyzsh/ohmyzsh || return
 # perform network I/O must be done above. Everything else is best done below.
 z4h init || return
 
-# Add all private keys
-find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add &> /dev/null
+env=~/.ssh/agent.env
+
+agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+
+agent_start () {
+    (umask 077; ssh-agent -s -t 20h >| "$env")
+    . "$env" >| /dev/null ; }
+
+agent_load_env
+
+# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2=agent not running
+agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+
+if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add &> /dev/null
+elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add &> /dev/null
+fi
 
 # This function is invoked by zsh4humans on every ssh command after
 # the instructions from ssh-related zstyles have been applied. It allows
