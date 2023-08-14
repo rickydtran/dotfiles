@@ -29,8 +29,6 @@ zstyle ':z4h:' propagate-cwd yes
 # Autostart ssh-agent
 zstyle ':z4h:ssh-agent:' start      yes
 zstyle ':z4h:ssh-agent:' extra-args -t 20h
-# Add all private keys
-find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add &> /dev/null
 
 # Right-arrow key accepts one character ('partial-accept') from
 # command autosuggestions or the whole thing ('accept')?
@@ -71,6 +69,9 @@ z4h install ohmyzsh/ohmyzsh || return
 # is fully initialized. Everything that requires user interaction or can
 # perform network I/O must be done above. Everything else is best done below.
 z4h init || return
+
+# Add all private keys
+find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add &> /dev/null
 
 # This function is invoked by zsh4humans on every ssh command after
 # the instructions from ssh-related zstyles have been applied. It allows
