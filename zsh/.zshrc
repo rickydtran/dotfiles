@@ -23,6 +23,15 @@ zstyle ':z4h:' start-tmux       no
 # Mark up shell's output with semantic information.
 zstyle ':z4h:' term-shell-integration 'yes'
 
+# Propagate current directory to new windows
+zstyle ':z4h:' propagate-cwd yes
+
+# Autostart ssh-agent
+zstyle ':z4h:ssh-agent:' start      yes
+zstyle ':z4h:ssh-agent:' extra-args -t 20h
+# Add all private keys
+find ~/.ssh/ -type f -exec grep -l "PRIVATE" {} \; | xargs ssh-add &> /dev/null
+
 # Right-arrow key accepts one character ('partial-accept') from
 # command autosuggestions or the whole thing ('accept')?
 zstyle ':z4h:autosuggestions' forward-char 'accept'
@@ -214,9 +223,6 @@ git_clean_repo() {
 
 # Clear to Bottom
 alias clear=z4h-clear-screen-soft-bottom
-
-zstyle ':z4h:ssh-agent:' start      yes
-zstyle ':z4h:ssh-agent:' extra-args -t 20h
 
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
