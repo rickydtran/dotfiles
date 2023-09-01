@@ -55,7 +55,7 @@ zstyle ':z4h:ssh:testgpu-*'           enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.vimrc' '~/.tmux.conf'
+zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.config/htop/htoprc' '~/.vimrc' '~/.tmux.conf'
 
 # Clone additional Git repositories from GitHub.
 #
