@@ -52,6 +52,7 @@ zstyle ':z4h:ssh:*core*'              enable 'yes'
 zstyle ':z4h:ssh:*agent*'             enable 'yes'
 zstyle ':z4h:ssh:metal-*'             enable 'yes'
 zstyle ':z4h:ssh:testgpu-*'           enable 'yes'
+zstyle ':z4h:ssh:*samc*'              enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
