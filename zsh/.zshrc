@@ -49,6 +49,7 @@ zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'no'
 zstyle ':z4h:ssh:*core*'              enable 'yes'
+zstyle ':z4h:ssh:*swxtch*'            enable 'yes'
 zstyle ':z4h:ssh:*agent*'             enable 'yes'
 zstyle ':z4h:ssh:metal-*'             enable 'yes'
 zstyle ':z4h:ssh:testgpu-*'           enable 'yes'

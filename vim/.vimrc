@@ -28,14 +28,16 @@ Plug 'scrooloose/nerdtree'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'joshdick/onedark.vim'
 Plug 'Cognoscan/vim-vhdl'
+Plug 'rhlobo/vim-super-retab'
 " Plug 'scrooloose/syntastic'
 call plug#end()
 
 " Key Mappings
-let mapleader="<space>"
+let mapleader=","
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 inoremap jk <esc>
+set pastetoggle=<F3>
 " inoremap <esc> <nop>
 map <c-n> :NERDTreeToggle<cr>
 map <c-a> <esc>ggVG$<cr>
