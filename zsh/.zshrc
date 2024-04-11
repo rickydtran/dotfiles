@@ -51,9 +51,10 @@ zstyle ':z4h:ssh:*'                   enable 'no'
 zstyle ':z4h:ssh:*core*'              enable 'yes'
 zstyle ':z4h:ssh:*swxtch*'            enable 'yes'
 zstyle ':z4h:ssh:*agent*'             enable 'yes'
-zstyle ':z4h:ssh:metal-*'             enable 'yes'
+zstyle ':z4h:ssh:*metal*'             enable 'yes'
 zstyle ':z4h:ssh:testgpu-*'           enable 'yes'
 zstyle ':z4h:ssh:*samc*'              enable 'yes'
+zstyle ':z4h:ssh:*runner*'            enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
@@ -125,6 +126,7 @@ function z4h-ssh-configure() {
     ec2-*)   machine_tag=ec2;;
     *core*)  machine_tag=core;;
     *agent*) machine_tag=agent;;
+    *metal*) machine_tag=metal;;
     *)       machine_tag=$z4h_ssh_host;;
   esac
 
@@ -195,7 +197,7 @@ alias tree='tree -a -I .git'
 alias setup_workspace='tmux new -s dev -d; tmux new -s test -d; tmux ls'
 
 # Add flags to existing aliases.
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+if [[ "$OSTYPE" == "linux"* ]]; then
     alias ls="${aliases[ls]:-ls} -x --color=auto --group-directories-first"
     alias la="${aliases[ls]:-ls} -ax --color=auto --group-directories-first"
     alias ll="${aliases[ls]:-ls} -l --color=auto --group-directories-first"
