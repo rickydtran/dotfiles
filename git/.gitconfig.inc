@@ -22,6 +22,7 @@
 [rebase]
     autoStash = true
 [alias]
+    please = push --force-with-lease --force-if-includes
     tree = log --all --graph
     unstage = reset HEAD --
     discard = checkout
@@ -34,4 +35,5 @@
     difms = diff --diff-filter=M --staged
 [pull]
     rebase = true
-
+[rerere]
+	enabled = true
