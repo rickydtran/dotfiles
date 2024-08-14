@@ -196,6 +196,9 @@ compdef _directories md
 # Define aliases.
 alias tree='tree -a -I .git'
 alias setup_workspace='tmux new -s dev -d; tmux new -s test -d; tmux ls'
+alias get_swx_pids='pgrep -l swx'
+alias get_pid_of="pgrep -a $1"
+alias list_iptables="sudo iptables -L -v | grep -v \"    0\" | less -N"
 
 # Add flags to existing aliases.
 if [[ "$OSTYPE" == "linux"* ]]; then
@@ -210,32 +213,50 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     alias lll="${aliases[gls]:-gls} -lA --color=auto --group-directories-first"
 fi
 
+# Port scanning
+function port_scan() {
+    proto=$1
+    ipaddr=$2
+    plow=$3
+    phigh=$4
+    [ -z "$4" ]  && phigh=$3
+    for port in {$plow..$phigh}; do
+        bash -c "echo -n 2>/dev/null < /dev/$proto/$ipaddr/$port && echo \"$port/$1 open\""
+    done
+}
+
+# udp ping
+function udp_ping() {
+    ipaddr=$1
+    port=$2
+    bash -c "echo -n \"ping\" > /dev/udp/$ipaddr/$port"
+}
 
 # "fancy" diffs
 function dsf() { diff -u "$1" "$2" | delta; }
 
 # submodule update
-git_submodules_update() {
+function git_submodules_update() {
     git submodule sync --recursive
     git submodule update --init --force --recursive
     git submodule foreach --recursive git clean -ffdx
 }
 
 # fetch all tags and branches
-git_fetch_all() {
+function git_fetch_all() {
     git branch -r | grep -v '\->' | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
     git fetch --all
     git pull --all
 }
 
 # nuke all branches other than default branch
-git_clean_branches() {
+function git_clean_branches() {
     def_branch=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
     git branch | grep -v "^\* $def_branch" | xargs -n 1 -r git branch -D
 }
 
 # nuke and clean git repo
-git_clean_repo() {
+function git_clean_repo() {
     git reset --hard
     git_clean_branches
     git submodule sync --recursive
