@@ -56,6 +56,7 @@ zstyle ':z4h:ssh:*metal*'             enable 'yes'
 zstyle ':z4h:ssh:testgpu-*'           enable 'yes'
 zstyle ':z4h:ssh:*samc*'              enable 'yes'
 zstyle ':z4h:ssh:*runner*'            enable 'yes'
+zstyle ':z4h:ssh:*bastion*'           enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
@@ -199,6 +200,7 @@ alias setup_workspace='tmux new -s dev -d; tmux new -s test -d; tmux ls'
 alias get_swx_pids='pgrep -l swx'
 alias get_pid_of="pgrep -a $1"
 alias list_iptables="sudo iptables -L -v | grep -v \"    0\" | less -N"
+alias get_wan_ip="curl ifconfig.me"
 
 # Add flags to existing aliases.
 if [[ "$OSTYPE" == "linux"* ]]; then
