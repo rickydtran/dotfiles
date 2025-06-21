@@ -115,6 +115,39 @@ else
     print_info "Skipping system package updates"
 fi
 
+# Set up sandbox directory
+if [ ! -d "${HOME}/sandbox" ]; then
+    mkdir -p $HOME/sandbox
+fi
+
+# --- dotfiles
+# Clone & install dotfiles
+print_info "Configuring dotfiles"
+if [ ! -d "${HOME}/.dotfiles" ]; then
+    print_info "Cloning dotfiles"
+    git clone ${DOTFILES_REPO} "${HOME}/.dotfiles"
+else
+    print_info "dotfiles already cloned"
+fi
+
+print_info "Linking dotfiles"
+pushd "${HOME}/.dotfiles"
+stow --adopt zsh
+stow --adopt vim
+if command -v vim >/dev/null 2>&1; then
+    print_info "Bootstraping Vim"
+    vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
+fi
+stow --adopt tmux
+mkdir -p "${HOME}/.ssh"
+chmod 700 "${HOME}/.ssh"
+stow --adopt ssh
+stow --adopt git
+mkdir -p "${HOME}/.config"
+stow --adopt htop
+popd
+print_success "dotfiles installed"
+
 # Sets up a Linux and/or WSL (Windows Subsystem for Linux) based dev-environment.
 # Deployment of dotfiles are/will be the following:
 # 1. Git/HTTPS, will set up SSH
@@ -157,36 +190,6 @@ elif echo "${SSH_STATUS}" | grep -q "Could not resolve hostname"; then
 else
     print_error "SSH connection to GitHub failed. See output above."
 fi
-
-# Set up sandbox directory
-if [ ! -d "${HOME}/sandbox" ]; then
-    mkdir -p $HOME/sandbox
-fi
-
-# --- dotfiles
-# Clone & install dotfiles
-print_info "Configuring dotfiles"
-if [ ! -d "${HOME}/.dotfiles" ]; then
-    print_info "Cloning dotfiles"
-    git clone ${DOTFILES_REPO} "${HOME}/.dotfiles"
-else
-    print_info "dotfiles already cloned"
-fi
-
-print_info "Linking dotfiles"
-pushd "${HOME}/.dotfiles"
-stow --adopt zsh
-stow --adopt vim
-if command -v vim >/dev/null 2>&1; then
-    print_info "Bootstraping Vim"
-    vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
-fi
-stow --adopt tmux
-stow --adopt ssh
-stow --adopt git
-stow --adopt htop
-popd
-print_success "dotfiles installed"
 
 # --- Bootstrap z4h now that configuration exist
 exec zsh
