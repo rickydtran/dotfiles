@@ -48,6 +48,7 @@ zstyle ':z4h:ssh:example-hostname1'   enable 'yes'
 zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'no'
+zstyle ':z4h:ssh:swxtch-dev'          enable 'no'
 zstyle ':z4h:ssh:*core*'              enable 'yes'
 zstyle ':z4h:ssh:*swxtch*'            enable 'yes'
 zstyle ':z4h:ssh:*agent*'             enable 'yes'
@@ -273,6 +274,12 @@ alias clear=z4h-clear-screen-soft-bottom
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
+
+# Check if .vim directory exist. If it isn't then we will boostrap it to prevent vim being opened by a non-root user
+if command -v vim >/dev/null 2>&1 && [ -d ~/.vim ]; then
+    echo "Bootstraping Vim"
+    vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
+fi
 
 # list tmux status
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then

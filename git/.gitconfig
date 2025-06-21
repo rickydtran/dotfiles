@@ -1,0 +1,13 @@
+[include]
+    path = ~/.gitconfig.inc
+[user]
+    name = Ricky Tran
+    email = rickydtran@gmail.com
+[rerere]
+    enabled = false
+[commit]
+    gpgsign = false
+[column]
+    ui = auto
+[branch]
+    sort = committerdate

@@ -1,28 +1,35 @@
-ARG DISTRO=debian:latest
+ARG DISTRO=ubuntu:latest
 FROM ${DISTRO}
 
-# Install sudo and create a user with sudo privileges
-RUN apt-get update && \
-    apt-get install -y sudo && \
-    apt-get install -y locales && \
-    apt-get install -y git  && \
-    apt-get install -y stow  && \
-    apt-get install -y vim  && \
-    apt-get install -y tmux  && \
-    apt-get install -y curl && \
-    apt-get install -y wget && \
-    apt-get install -y htop && \
-    apt-get autoremove -y && \
-    apt-get autoclean -y && \
-    echo 'root ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# Common packages to install
+ENV COMMON_PACKAGES="zsh sudo curl wget git stow vim tmux ca-certificates ssh"
 
-# Set the locale
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8     
+RUN set -eux; \
+    if [ -f /etc/debian_version ]; then \
+        echo "Detected Debian-based system"; \
+        apt-get update && \
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            $COMMON_PACKAGES \
+            locales \
+        && sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+        && locale-gen \
+        && apt-get clean && rm -rf /var/lib/apt/lists/*; \
+    elif [ -f /etc/redhat-release ]; then \
+        echo "Detected RHEL-based system"; \
+        yum install -y \
+            $COMMON_PACKAGES \
+            glibc-langpack-en \
+        && localedef -i en_US -f UTF-8 en_US.UTF-8 || true \
+        && yum clean all && rm -rf /var/cache/yum; \
+    else \
+        echo "Unsupported distribution" && exit 1; \
+    fi
 
-WORKDIR /home/root/.dotfiles
-USER ubuntu
+RUN useradd -ms /bin/bash ricky
+# Set the user's password
+RUN echo ricky:ricky | chpasswd
+RUN echo '%ricky ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER ricky:ricky
+COPY --chown=ricky . /home/ricky/.dotfiles
+WORKDIR /home/ricky/.dotfiles
 CMD ["/bin/bash"]
