@@ -276,7 +276,7 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 # Check if .vim directory exist. If it isn't then we will boostrap it to prevent vim being opened by a non-root user
-if command -v vim >/dev/null 2>&1 && [ -d ~/.vim ]; then
+if command -v vim >/dev/null 2>&1 && ! [ -d ~/.vim ]; then
     echo "Bootstraping Vim"
     vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
 fi
