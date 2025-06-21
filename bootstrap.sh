@@ -136,7 +136,7 @@ stow --adopt zsh
 stow --adopt vim
 if command -v vim >/dev/null 2>&1; then
     print_info "Bootstraping Vim"
-    vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
+    sh -c "vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'"
 fi
 stow --adopt tmux
 mkdir -p "${HOME}/.ssh"
