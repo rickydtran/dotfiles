@@ -2,8 +2,7 @@
 
 # Configuration
 DOTFILES_REPO="https://github.com/rickydtran/dotfiles"
-#BREW_PACKAGES=(age asciinema atuin bat cmake curl delta fd ghostty gifski git go htop jq lua make mkcert neovim nmap node pipx python rcm ripgrep tmux tree wget wrk yarn youtube-dl zsh cloudflare/cloudflare/cloudflared rbenv ruby-build uv ruff)
-#CASKS=()
+PACKAGES="zsh sudo curl wget git stow vim tmux ca-certificates ssh htop"
 
 # Colors
 reset="$(tput sgr0)"
@@ -93,6 +92,29 @@ print_info "Windows for Linux Subsystem (WSL): ${IS_WSL}"
 print_info "Interactive shell session: ${INTERACTIVE}"
 print_info "User: ${USER}@${HOSTNAME}"
 
+# Check for connectivity
+if [ ping -q -w1 -c1 google.com &>/dev/null ]; then
+    print_error "Cannot connect to the Internet"
+    exit 1
+else
+    print_success "Internet reachable"
+fi
+
+# Ask for sudo
+sudo -v &> /dev/null
+
+# Update the system & install core dependencies
+if [ "$OS" = "Linux" ] && [ "$DISTRO" = "Debian" ]; then
+    print_info "Updating system packages"
+    sudo apt update
+    sudo apt -y upgrade
+    sudo apt -y install ${PACKAGES}
+    sudo apt -y autoremove
+    sudo apt autoclean
+else
+    print_info "Skipping system package updates"
+fi
+
 # Sets up a Linux and/or WSL (Windows Subsystem for Linux) based dev-environment.
 # Deployment of dotfiles are/will be the following:
 # 1. Git/HTTPS, will set up SSH
@@ -136,29 +158,6 @@ else
     print_error "SSH connection to GitHub failed. See output above."
 fi
 
-# Check for connectivity
-if [ ping -q -w1 -c1 google.com &>/dev/null ]; then
-    print_error "Cannot connect to the Internet"
-    exit 1
-else
-    print_success "Internet reachable"
-fi
-
-# Ask for sudo
-sudo -v &> /dev/null
-
-# Update the system & install core dependencies
-if [ "$OS" = "Linux" ] && [ "$DISTRO" = "Debian" ]; then
-    print_info "Updating system packages"
-    sudo apt update
-    sudo apt -y upgrade
-    sudo apt -y install curl wget git
-    sudo apt -y autoremove
-    sudo apt autoclean
-else
-    print_info "Skipping system package updates"
-fi
-
 # Set up sandbox directory
 if [ ! -d "${HOME}/sandbox" ]; then
     mkdir -p $HOME/sandbox
@@ -189,7 +188,5 @@ stow --adopt htop
 popd
 print_success "dotfiles installed"
 
-# --- Configure zsh
+# --- Bootstrap z4h now that configuration exist
 exec zsh
-
-print_success "Done!"
