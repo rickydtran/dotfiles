@@ -179,17 +179,25 @@ if [ "$INTERACTIVE" = true ] && ! [[ -f "${SSH_KEY}" ]]; then
     printf "🔑 Generating new SSH key\n"
     ssh-keygen -t ed25519 -f ${SSH_KEY} -C "${SSH_EMAIL}"
     print_info "Key: ${SSH_KEY} generated!"
+    cat "${SSH_KEY}.pub"
+    read -p "Upload public key to Github then...\nPress enter to continue..."
 fi
 
 SSH_STATUS=$(ssh -T git@github.com 2>&1|| true)
+GH_CONNECT=false
 if echo "${SSH_STATUS}" | grep -q "successfully authenticated"; then
     print_success "SSH is configured correctly for GitHub!"
+    GH_CONNECT=true
 elif echo "${SSH_STATUS}" | grep -q "Permission denied"; then
     print_error "SSH is set up, but authentication failed. Check your SSH keys in GitHub." exit 1
 elif echo "${SSH_STATUS}" | grep -q "Could not resolve hostname"; then
     print_error "Could not resolve GitHub host. Check your internet or SSH config."
 else
     print_error "SSH connection to GitHub failed. See output above."
+fi
+
+if [ "${GH_CONNECT}" = true ]; then
+    git remote set-url origin git@github.com:rickydtran/dotfiles.git
 fi
 
 # --- Bootstrap z4h now that configuration exist
