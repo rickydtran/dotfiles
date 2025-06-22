@@ -134,10 +134,11 @@ print_info "Linking dotfiles"
 pushd "${HOME}/.dotfiles"
 stow --adopt zsh
 stow --adopt vim
-if command -v vim >/dev/null 2>&1; then
-    print_info "Bootstraping Vim"
-    sh -c "vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'"
-fi
+# Let ZSH bootstrap VIM
+# if command -v vim >/dev/null 2>&1; then
+#     print_info "Bootstraping Vim"
+#     vim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall' >/dev/null
+# fi
 stow --adopt tmux
 mkdir -p "${HOME}/.ssh"
 chmod 700 "${HOME}/.ssh"
