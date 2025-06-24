@@ -65,7 +65,7 @@ ${reset}
 
 # Check environments
 OS=$(uname -s 2> /dev/null)
-USER=${USER}
+USER=$(whoami)
 HOSTNAME=$(hostname)
 DISTRO=""
 IS_WSL=false
@@ -142,6 +142,8 @@ stow --adopt vim
 stow --adopt tmux
 mkdir -p "${HOME}/.ssh"
 chmod 700 "${HOME}/.ssh"
+mkdir -p "${HOME}/.ssh/config.d"
+mkdir -p "${HOME}/.ssh/s"
 stow --adopt ssh
 stow --adopt git
 mkdir -p "${HOME}/.config"
@@ -180,10 +182,10 @@ if [ "$INTERACTIVE" = true ] && ! [[ -f "${SSH_KEY}" ]]; then
     ssh-keygen -t ed25519 -f ${SSH_KEY} -C "${SSH_EMAIL}"
     print_info "Key: ${SSH_KEY} generated!"
     cat "${SSH_KEY}.pub"
-    read -p "Upload public key to Github then...\nPress enter to continue..."
+    read -p "Upload public key to Github then...Press enter to continue..."
 fi
 
-SSH_STATUS=$(ssh -T git@github.com 2>&1|| true)
+SSH_STATUS=$("ssh -i ${SSH_KEY} -T git@github.com 2>&1"|| true)
 GH_CONNECT=false
 if echo "${SSH_STATUS}" | grep -q "successfully authenticated"; then
     print_success "SSH is configured correctly for GitHub!"
