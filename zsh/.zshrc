@@ -161,6 +161,14 @@ function z4h-ssh-configure() {
   done
 }
 
+# Set terminal title to user@host:path for tmux automatic-rename (SSH only)
+if [[ -n "$SSH_CONNECTION" ]]; then
+  function set-terminal-title() {
+    printf "\033]2;%s@%s:%s\033\\" "${USER}" "${HOST%%.*}" "${PWD/#$HOME/~}"
+  }
+  add-zsh-hook precmd set-terminal-title
+fi
+
 # Extend PATH.
 path=(~/bin $path)
 
@@ -267,6 +275,12 @@ function git_clean_repo() {
     git clean -ffdx
     git submodule foreach --recursive git clean -ffdx
 }
+
+# Fix issue for terminal paste corruption for claude
+#function claude() {
+#    command claude "$@"
+#    printf '\e[?2004l'
+#}
 
 # Clear to Bottom
 alias clear=z4h-clear-screen-soft-bottom
