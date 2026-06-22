@@ -52,6 +52,7 @@
       "slack"
       "zoom"
       "microsoft-teams"
+      "microsoft-outlook"        # standalone cask (App Store build must be removed first so it sticks)
       "amazon-chime"
       "granola"
       "windows-app"              # MS Remote Desktop — moved from App Store → cask
@@ -97,8 +98,6 @@
       "CleanMyKeyboard" = 6468120888;
       "AdGuard for Safari"   = 1440147259;   # Safari extension (≠ standalone `adguard` cask)
       "Obsidian Web Clipper" = 6720708363;   # Safari extension
-      "Microsoft Outlook"    = 985367838;    # App Store build is what's actually installed
-                                             # (_MASReceipt sticky); declare it instead of fighting w/ cask
     };
   };
 
