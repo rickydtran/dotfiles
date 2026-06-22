@@ -3,6 +3,8 @@
 [user]
     name = Ricky Tran
     email = rickydtran@gmail.com
+[includeIf "gitdir:~/sandbox/swxtchio/"]
+    path = ~/sandbox/swxtchio/.gitconfig
 [rerere]
     enabled = false
 [commit]
