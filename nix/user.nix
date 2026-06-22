@@ -7,16 +7,19 @@
 #                       letting HM generate one, so z4h stays 100% in charge.
 #   - NO programs.git → your rich .gitconfig has the real aliases; symlink, don't regenerate.
 #
-# home.file below replaces `stow` ON THE MAC ONLY. It points mkOutOfStoreSymlink at the
-# SAME files stow uses (the package dirs), so the repo layout is unchanged and remote
-# Linux boxes can still `stow zsh` from the identical source. One source of truth.
+# home.file below links every dotfile from the repo into $HOME — on BOTH Mac (via
+# nix-darwin's HM) and Linux dev boxes (via standalone HM). Replaces stow entirely;
+# mkOutOfStoreSymlink keeps the files live-editable in the repo. One source of truth.
 let
   dot = "${config.home.homeDirectory}/.dotfiles";
   link = path: config.lib.file.mkOutOfStoreSymlink "${dot}/${path}";
 in
 {
   home.username = "ricky";
-  home.homeDirectory = "/Users/ricky";
+  # Flake eval is pure — Nix can't read $HOME/$USER — so standalone Home Manager
+  # requires these explicitly. Path derives from username; only the macOS (/Users)
+  # vs Linux (/home) prefix differs.
+  home.homeDirectory = (if pkgs.stdenv.isDarwin then "/Users/" else "/home/") + config.home.username;
   home.stateVersion = "23.11";
   home.language.base = "en_US.UTF-8";
 
@@ -26,7 +29,6 @@ in
     coreutils
     bash
     zsh
-    stow
     tmux
     htop
     neovim
@@ -96,8 +98,8 @@ in
     EDITOR = "vim";
   };
 
-  # Config symlinks — what `stow` did, now owned by `darwin-rebuild` on the Mac.
-  # Each points at the existing stow package dir, so files stay live-editable in the repo.
+  # Config symlinks — Home Manager owns these on every machine (Mac + Linux).
+  # Each points at the repo's package dir, so files stay live-editable.
   home.file = {
     ".zshrc".source     = link "zsh/.zshrc";
     ".zshenv".source    = link "zsh/.zshenv";

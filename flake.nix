@@ -13,8 +13,17 @@
     };
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, ... }: {
-    # Build/apply with:  darwin-rebuild switch --flake ~/.dotfiles#mac
+  outputs = { nixpkgs, nix-darwin, home-manager, ... }:
+  let
+    # Standalone Home Manager for Linux dev boxes — same user.nix as the Mac.
+    #   home-manager switch --flake ~/.dotfiles#ricky        (x86_64)
+    #   home-manager switch --flake ~/.dotfiles#ricky-arm    (aarch64)
+    mkHome = system: home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.${system};
+      modules = [ ./nix/user.nix ];
+    };
+  in {
+    # Mac: full system + user layer.  darwin-rebuild switch --flake ~/.dotfiles#mac
     darwinConfigurations.mac = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
@@ -27,6 +36,12 @@
           home-manager.users.ricky = import ./nix/user.nix;
         }
       ];
+    };
+
+    # Linux: user layer only (no nix-darwin; macOS system defaults don't apply).
+    homeConfigurations = {
+      "ricky"     = mkHome "x86_64-linux";
+      "ricky-arm" = mkHome "aarch64-linux";
     };
   };
 }
