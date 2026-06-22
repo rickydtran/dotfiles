@@ -105,7 +105,7 @@ in
   fonts.fontconfig.enable = true;
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "nvim";
   };
 
   # Config symlinks - Home Manager owns these on every machine (Mac + Linux).
@@ -116,6 +116,7 @@ in
     ".p10k.zsh".source  = link "zsh/.p10k.zsh";
     ".env.zsh".source   = link "zsh/.env.zsh";
     ".vimrc".source     = link "vim/.vimrc";
+    ".config/nvim/init.vim".source = link "vim/init.vim";
     ".tmux.conf".source = link "tmux/.tmux.conf";
     ".gitconfig".source     = link "git/.gitconfig";
     ".gitconfig.inc".source = link "git/.gitconfig.inc";

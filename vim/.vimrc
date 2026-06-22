@@ -39,7 +39,8 @@ let mapleader=","
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 inoremap jk <esc>
-set pastetoggle=<F3>
+" nvim auto-detects paste (bracketed-paste) and dropped 'pastetoggle' (E519).
+if !has('nvim') | set pastetoggle=<F3> | endif
 " inoremap <esc> <nop>
 map <c-n> :NERDTreeToggle<cr>
 map <c-a> <esc>ggVG$<cr>
