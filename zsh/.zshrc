@@ -306,3 +306,11 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
         echo "\ntmux not running!"
     fi
 fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/ricky/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

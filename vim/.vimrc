@@ -20,8 +20,9 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
 " Initialize plugin system
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
@@ -29,6 +30,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'joshdick/onedark.vim'
 Plug 'Cognoscan/vim-vhdl'
 Plug 'rhlobo/vim-super-retab'
+Plug 'rose-pine/vim'
 " Plug 'scrooloose/syntastic'
 call plug#end()
 
@@ -44,7 +46,9 @@ map <c-a> <esc>ggVG$<cr>
 
 " Settings
 syntax enable
-silent! colorscheme onedark
+" silent! colorscheme onedark
+set background=dark
+silent! colorscheme rosepine
 " set noeb vb t_vb= " Disables chime
 set noerrorbells novisualbell " Turn off visual and audbile bells
 set nobackup nowritebackup noswapfile " Turn off backup files
@@ -81,5 +85,6 @@ set showcmd " Show size of visual selection
 " let g:syntastic_check_on_wq = 0
 " let g:syntastic_vhdl_checkers= ['vhdltool']
 
-let g:airline_theme='onedark'
+" let g:airline_theme='onedark'
 " let g:airline_solarized_bg='light'
+let g:lightline = { 'colorscheme': 'rosepine' }
