@@ -14,7 +14,10 @@
     # "uninstall" prunes any brew package/cask not declared here on each rebuild.
     # ("zap" would also wipe their app data — too aggressive.)
     onActivation.cleanup = "uninstall";
-    taps = [ ];
+    taps = [
+      "acrogenesis/macchanger"   # macchanger lives here
+      "bufbuild/buf"             # buf lives here
+    ];
 
     # Mac-native / awkward-in-nix tooling — kept on brew deliberately.
     brews = [
@@ -26,9 +29,13 @@
       "iproute2mac"                   # mac shim for ip(8)
       "mingw-w64"                     # windows cross-toolchain
       "mas"                           # App Store CLI — drives masApps below
-      # CLI tools not in nixpkgs — kept on brew (else cleanup="uninstall" would prune them)
+      # Fast-moving JS/npm CLIs — kept on brew on purpose (nixpkgs lags; ccusage absent
+      # entirely). Per the "right ecosystem manager" rule, not nix.
       "ccusage"
       "gemini-cli"
+      # from third-party taps (declared above)
+      "acrogenesis/macchanger/macchanger"
+      "bufbuild/buf/buf"
     ];
 
     # GUI apps via cask. "Working core" filter: tools that define how you

@@ -84,10 +84,10 @@ in
     noto-fonts
     noto-fonts-color-emoji
 
-    # ── VERIFY / DECIDE before first rebuild ──────────────────────────────
-    # gemini-cli  → confirm nixpkgs attr exists; else keep on brew/npm
-    # ccusage     → npm-only; leave to npm (right ecosystem mgr for it)
-    # lmstudio (lms) → not in nixpkgs; keep its own installer (~/.lmstudio)
+    # ── intentionally NOT here (kept on brew/own installer) ───────────────
+    # gemini-cli  → in nixpkgs but lags; fast-moving JS tooling → brew (host.nix)
+    # ccusage     → not in nixpkgs (npm tool) → brew (host.nix)
+    # lmstudio (lms) → not in nixpkgs; keeps its own installer (~/.lmstudio)
   ];
 
   fonts.fontconfig.enable = true;
