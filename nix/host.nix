@@ -26,6 +26,9 @@
       "iproute2mac"                   # mac shim for ip(8)
       "mingw-w64"                     # windows cross-toolchain
       "mas"                           # App Store CLI — drives masApps below
+      # CLI tools not in nixpkgs — kept on brew (else cleanup="uninstall" would prune them)
+      "ccusage"
+      "gemini-cli"
     ];
 
     # GUI apps via cask. "Working core" filter: tools that define how you
