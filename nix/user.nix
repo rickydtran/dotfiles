@@ -60,6 +60,7 @@ in
     libtool
     pkg-config        # nixpkgs attr for pkgconf
     protobuf
+    buf               # protobuf tooling (was bufbuild/buf tap)
 
     # language runtimes / toolchains
     go
@@ -92,7 +93,8 @@ in
   ]
   # Platform-specific CLI tools (most Mac-specific stuff is GUI → host.nix instead).
   ++ lib.optionals pkgs.stdenv.isLinux [
-    # strace  iproute2  …  (Linux-only)
+    macchanger        # MAC-address changer — Linux-only in nixpkgs (was acrogenesis tap on Mac)
+    # strace  iproute2  …
   ]
   ++ lib.optionals pkgs.stdenv.isDarwin [
     # mac-only CLI (rare)

@@ -14,10 +14,7 @@
     # "uninstall" prunes any brew package/cask not declared here on each rebuild.
     # ("zap" would also wipe their app data — too aggressive.)
     onActivation.cleanup = "uninstall";
-    taps = [
-      "acrogenesis/macchanger"   # macchanger lives here
-      "bufbuild/buf"             # buf lives here
-    ];
+    taps = [ ];
 
     # Mac-native / awkward-in-nix tooling — kept on brew deliberately.
     brews = [
@@ -33,9 +30,7 @@
       # entirely). Per the "right ecosystem manager" rule, not nix.
       "ccusage"
       "gemini-cli"
-      # from third-party taps (declared above)
-      "acrogenesis/macchanger/macchanger"
-      "bufbuild/buf/buf"
+      # (buf + macchanger moved to nix/user.nix — no more third-party taps)
     ];
 
     # GUI apps via cask. "Working core" filter: tools that define how you
