@@ -48,7 +48,7 @@ in
     git-filter-repo
     lazygit
     delta             # syntax-highlighting diff pager (used by dsf())
-    gnupg             # gpg — for signing commits
+    # (commit signing uses SSH keys via git, not gpg — no gnupg needed)
 
     # net / sys
     curl
