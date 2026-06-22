@@ -15,17 +15,14 @@
 
   outputs = { nixpkgs, nix-darwin, home-manager, ... }:
   let
-    # Standalone Home Manager for Linux dev boxes — same user.nix as the Mac.
-    #   home-manager switch --flake ~/.dotfiles#ricky        (x86_64)
-    #   home-manager switch --flake ~/.dotfiles#ricky-arm    (aarch64)
-    mkHome = system: home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.${system};
-      modules = [ ./nix/user.nix ];
-    };
-  in {
-    # Mac: full system + user layer.  darwin-rebuild switch --flake ~/.dotfiles#mac
-    darwinConfigurations.mac = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
+    # TURNKEY: one entry per machine below, keyed by its LOGIN. bootstrap.sh and the
+    # `rebuild` alias auto-select with `#$(whoami)`, so a clean machine needs nothing
+    # but its one-line entry. username flows into host.nix + user.nix via specialArgs.
+
+    # Mac (full system + user layer).
+    mkDarwin = { system, username }: nix-darwin.lib.darwinSystem {
+      inherit system;
+      specialArgs = { inherit username; };                 # → host.nix
       modules = [
         ./nix/host.nix
         home-manager.darwinModules.home-manager
@@ -33,15 +30,30 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-          home-manager.users.ricky = import ./nix/user.nix;
+          home-manager.extraSpecialArgs = { inherit username; };   # → user.nix
+          home-manager.users.${username} = import ./nix/user.nix;
         }
       ];
     };
 
-    # Linux: user layer only (no nix-darwin; macOS system defaults don't apply).
+    # Linux dev box (user layer only; macOS system defaults don't apply).
+    mkHome = { system, username }: home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.${system};
+      extraSpecialArgs = { inherit username; };            # → user.nix
+      modules = [ ./nix/user.nix ];
+    };
+  in {
+    # Apply on a Mac:  darwin-rebuild switch --flake ~/.dotfiles#$(whoami)
+    darwinConfigurations = {
+      ricky = mkDarwin { system = "aarch64-darwin"; username = "ricky"; };
+      # new Mac → add one line keyed by its login, e.g.:
+      # rickyt = mkDarwin { system = "aarch64-darwin"; username = "rickyt"; };
+    };
+
+    # Apply on a Linux box:  home-manager switch --flake ~/.dotfiles#$(whoami)
     homeConfigurations = {
-      "ricky"     = mkHome "x86_64-linux";
-      "ricky-arm" = mkHome "aarch64-linux";
+      # new Linux box → add one line keyed by its login, e.g.:
+      # rickytran = mkHome { system = "x86_64-linux"; username = "rickytran"; };
     };
   };
 }

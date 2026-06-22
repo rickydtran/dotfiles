@@ -43,13 +43,15 @@ if ! command -v brew &>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# 4. Apply the flake. sudo resets PATH (secure_path), so invoke nix by full path.
-echo "==> Applying nix-darwin flake (sudo)"
+# 4. Apply the flake. The config is keyed by login, so select it with whoami.
+#    sudo resets PATH (secure_path), so invoke nix by full path.
+user="$(whoami)"
+echo "==> Applying nix-darwin flake #$user (sudo)"
 if [ -x /run/current-system/sw/bin/darwin-rebuild ]; then
-  sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$DOTFILES_DIR#mac"
+  sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$DOTFILES_DIR#$user"
 else
   # First run only: darwin-rebuild doesn't exist yet, bootstrap it from the flake input.
-  sudo "$NIX" run github:LnL7/nix-darwin#darwin-rebuild -- switch --flake "$DOTFILES_DIR#mac"
+  sudo "$NIX" run github:LnL7/nix-darwin#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$user"
 fi
 
 echo "==> Done. Open a new terminal, then iterate with:  rebuild"

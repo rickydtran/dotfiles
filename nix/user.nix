@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, ... }:
 
 # USER LAYER (Home Manager): reproducible CLI baseline + fonts + config symlinks.
 #
@@ -15,11 +15,10 @@ let
   link = path: config.lib.file.mkOutOfStoreSymlink "${dot}/${path}";
 in
 {
-  home.username = "ricky";
-  # Flake eval is pure — Nix can't read $HOME/$USER — so standalone Home Manager
-  # requires these explicitly. Path derives from username; only the macOS (/Users)
-  # vs Linux (/home) prefix differs.
-  home.homeDirectory = (if pkgs.stdenv.isDarwin then "/Users/" else "/home/") + config.home.username;
+  # Username comes from the flake per machine (specialArgs); flake eval is pure (no $USER).
+  home.username = username;
+  # Path derives from username; only the macOS (/Users) vs Linux (/home) prefix differs.
+  home.homeDirectory = (if pkgs.stdenv.isDarwin then "/Users/" else "/home/") + username;
   home.stateVersion = "23.11";
   home.language.base = "en_US.UTF-8";
 

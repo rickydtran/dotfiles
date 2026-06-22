@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 # MACHINE LAYER (nix-darwin): GUI apps, mac-native CLIs, and macOS system defaults.
 # Ownership rule: Homebrew owns GUI + mac-native tools; Nix owns reproducible CLI.
@@ -111,9 +111,9 @@
     };
   };
 
-  system.primaryUser = "ricky";
-  users.users.ricky = {
-    home = "/Users/ricky";
+  system.primaryUser = username;
+  users.users.${username} = {
+    home = "/Users/${username}";
     shell = pkgs.zsh;   # login shell only — z4h still owns ALL zsh config (see user.nix note)
   };
 
@@ -143,7 +143,7 @@
 
   environment.systemPath = [
     "/run/current-system/sw/bin"
-    "/etc/profiles/per-user/ricky/bin"
+    "/etc/profiles/per-user/${username}/bin"
   ];
 
   system.stateVersion = 6;
