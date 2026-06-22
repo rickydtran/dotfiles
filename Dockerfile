@@ -1,40 +1,19 @@
-ARG DISTRO=ubuntu:latest
-FROM ${DISTRO}
+# Validates the Linux Home Manager path of this flake, in a container.
+# The build IS the test: if `nix build` of the activation package succeeds,
+# the shared nix/user.nix builds on Linux.
+#   docker build -t dotfiles-linux-test .
+FROM nixos/nix:latest
 
-# Common packages to install
-ENV COMMON_PACKAGES="zsh sudo curl wget git stow vim tmux ca-certificates ssh"
+RUN mkdir -p /etc/nix && \
+    printf 'experimental-features = nix-command flakes\n' >> /etc/nix/nix.conf
 
-RUN set -eux; \
-    if [ -f /etc/debian_version ]; then \
-        echo "Detected Debian-based system"; \
-        apt-get update && \
-        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-            $COMMON_PACKAGES \
-            locales \
-        && apt-get clean && rm -rf /var/lib/apt/lists/*; \
-    elif [ -f /etc/redhat-release ]; then \
-        echo "Detected RHEL-based system"; \
-        yum install -y \
-            $COMMON_PACKAGES \
-            glibc-langpack-en \
-        && localedef -i en_US -f UTF-8 en_US.UTF-8 || true \
-        && yum clean all && rm -rf /var/cache/yum; \
-    else \
-        echo "Unsupported distribution" && exit 1; \
-    fi
+COPY . /dotfiles
+WORKDIR /dotfiles
 
-# Set the locale
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-
-RUN useradd -ms /bin/bash ricky
-# Set the user's password
-RUN echo ricky:ricky | chpasswd
-RUN echo '%ricky ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER ricky:ricky
-COPY --chown=ricky . /home/ricky/.dotfiles
-WORKDIR /home/ricky/.dotfiles
-CMD ["/bin/bash"]
+# Drop git so the throwaway host file is visible to the flake (plain-dir flake,
+# no git staging needed), register a Linux host matching the container arch,
+# then build its Home Manager activation package.
+RUN rm -rf .git result && \
+    printf '{ type = "home"; system = "aarch64-linux"; username = "tester"; }\n' > hosts/tester.nix && \
+    nix build '.#homeConfigurations.tester.activationPackage' --print-build-logs && \
+    echo "=== LINUX HOME-MANAGER BUILD OK ==="
