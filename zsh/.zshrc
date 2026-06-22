@@ -193,6 +193,29 @@ z4h bindkey z4h-cd-forward Shift+Right  # cd into the next directory
 z4h bindkey z4h-cd-up      Shift+Up     # cd into the parent directory
 z4h bindkey z4h-cd-down    Shift+Down   # cd into a child directory
 
+# Silently refresh tmux-forwarded env vars (DISPLAY, SSH_*) on client attach.
+# The tmux-update-display plugin looks for a `renew_tmux_env` widget and, when
+# present, triggers it via Ctrl-Alt-T instead of typing `export DISPLAY=...`
+# into every pane's prompt (the line that used to echo on attach). The no-tmux
+# branch keeps the function defined so the plugin's `zsh -ci 'type ...'` probe
+# still finds it outside tmux.
+if [[ -n $TMUX ]]; then
+  function renew_tmux_env() {
+    local assignment
+    for assignment in "${(@f)$(tmux show-environment 2>/dev/null)}"; do
+      case $assignment in
+        DISPLAY=*|SSH_CONNECTION=*|SSH_AUTH_SOCK=*) export $assignment ;;
+      esac
+    done
+  }
+else
+  function renew_tmux_env() {}
+fi
+zle -N renew_tmux_env
+bindkey -M emacs '^[^T' renew_tmux_env
+bindkey -M viins '^[^T' renew_tmux_env
+bindkey -M vicmd '^[^T' renew_tmux_env
+
 # Autoload functions.
 autoload -Uz zmv
 
