@@ -78,5 +78,5 @@ CI (`.github/workflows/ci.yml`) builds both configs on every push:
 - the darwin system closure on a macOS runner
 - the shared Home Manager config on a Linux runner
 
-Locally, `docker_test.sh` builds the Linux config in a container (the build is the test).
+Locally, `docker_test.sh` runs an end-to-end test in a container: it builds the Linux config, activates it, and asserts the dotfile links and tools resolve.
 A real macOS box is its own proof; there is no macOS container (macOS cannot run in Docker).
