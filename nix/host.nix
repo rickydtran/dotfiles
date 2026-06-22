@@ -71,7 +71,6 @@
       "betterdisplay"
       "mos"
       "scroll-reverser"
-      "elgato-control-center"
       "logitune"
       "logi-options+"
       # docs
