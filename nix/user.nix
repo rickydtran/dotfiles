@@ -3,11 +3,11 @@
 # USER LAYER (Home Manager): reproducible CLI baseline + fonts + config symlinks.
 #
 # DELIBERATE DESIGN CHOICE:
-#   - NO programs.zsh → z4h owns the shell. We symlink the raw .zshrc instead of
+#   - NO programs.zsh -> z4h owns the shell. We symlink the raw .zshrc instead of
 #                       letting HM generate one, so z4h stays 100% in charge.
-#   - NO programs.git → your rich .gitconfig has the real aliases; symlink, don't regenerate.
+#   - NO programs.git -> your rich .gitconfig has the real aliases; symlink, don't regenerate.
 #
-# home.file below links every dotfile from the repo into $HOME — on BOTH Mac (via
+# home.file below links every dotfile from the repo into $HOME - on BOTH Mac (via
 # nix-darwin's HM) and Linux dev boxes (via standalone HM). Replaces stow entirely;
 # mkOutOfStoreSymlink keeps the files live-editable in the repo. One source of truth.
 let
@@ -24,8 +24,8 @@ in
 
   # Seeded from your actual `brew leaves`. Pure-CLI tools move here; brew keeps GUI/mac-native.
   home.packages = with pkgs; [
-    # shell + core. coreutils-PREFIXED gives `gls`/`gcat`/… (the `g` prefix the
-    # darwin ls/ll aliases in .zshrc rely on — same convention as brew coreutils).
+    # shell + core. coreutils-PREFIXED gives `gls`/`gcat`/... (the `g` prefix the
+    # darwin ls/ll aliases in .zshrc rely on - same convention as brew coreutils).
     coreutils-prefixed
     bash
     zsh
@@ -42,7 +42,7 @@ in
     ripgrep
     poppler
 
-    # git tooling (binaries only — config is symlinked via home.file below)
+    # git tooling (binaries only - config is symlinked via home.file below)
     git
     gh
     git-filter-repo
@@ -88,15 +88,15 @@ in
     noto-fonts
     noto-fonts-color-emoji
 
-    # ── intentionally NOT here (kept on brew/own installer) ───────────────
-    # gemini-cli  → in nixpkgs but lags; fast-moving JS tooling → brew (host.nix)
-    # ccusage     → not in nixpkgs (npm tool) → brew (host.nix)
-    # lmstudio (lms) → not in nixpkgs; keeps its own installer (~/.lmstudio)
+    # -- intentionally NOT here (kept on brew/own installer) ---------------
+    # gemini-cli  -> in nixpkgs but lags; fast-moving JS tooling -> brew (host.nix)
+    # ccusage     -> not in nixpkgs (npm tool) -> brew (host.nix)
+    # lmstudio (lms) -> not in nixpkgs; keeps its own installer (~/.lmstudio)
   ]
-  # Platform-specific CLI tools (most Mac-specific stuff is GUI → host.nix instead).
+  # Platform-specific CLI tools (most Mac-specific stuff is GUI -> host.nix instead).
   ++ lib.optionals pkgs.stdenv.isLinux [
-    macchanger        # MAC-address changer — Linux-only in nixpkgs (was acrogenesis tap on Mac)
-    # strace  iproute2  …
+    macchanger        # MAC-address changer - Linux-only in nixpkgs (was acrogenesis tap on Mac)
+    # strace  iproute2  ...
   ]
   ++ lib.optionals pkgs.stdenv.isDarwin [
     # mac-only CLI (rare)
@@ -108,7 +108,7 @@ in
     EDITOR = "vim";
   };
 
-  # Config symlinks — Home Manager owns these on every machine (Mac + Linux).
+  # Config symlinks - Home Manager owns these on every machine (Mac + Linux).
   # Each points at the repo's package dir, so files stay live-editable.
   home.file = {
     ".zshrc".source     = link "zsh/.zshrc";

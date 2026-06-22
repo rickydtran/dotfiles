@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Bootstrap a Linux dev box: install Determinate Nix, then apply Home Manager
-# (the same nix/user.nix the Mac uses). No stow — HM owns the dotfile links.
+# (the same nix/user.nix the Mac uses). No stow - HM owns the dotfile links.
 # NOTE: not yet tested on a real Linux box; the Mac path (setup/mac.sh) is verified.
 set -euo pipefail
 
@@ -27,7 +27,7 @@ if ! command -v nix &>/dev/null; then
   daemon=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   [ -e "$daemon" ] && . "$daemon"
 fi
-command -v nix >/dev/null || { echo "nix not on PATH — open a new shell and re-run." >&2; exit 1; }
+command -v nix >/dev/null || { echo "nix not on PATH - open a new shell and re-run." >&2; exit 1; }
 
 # 3. Apply Home Manager. The config is keyed by login, so select it with whoami.
 #    -b backup handles pre-existing dotfiles.

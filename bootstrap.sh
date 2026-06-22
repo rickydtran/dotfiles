@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # One-shot entry point. Clones the repo, auto-registers THIS machine as
 # hosts/<login>.nix (detected from the environment), then hands off to the
-# per-OS Nix bootstrap. No per-machine flake.nix editing — ever.
+# per-OS Nix bootstrap. No per-machine flake.nix editing - ever.
 #
 # The impurity lives HERE, in the shell (detect env, write a file). The flake
 # then reads that file purely. Best of both: zero manual edits + pure eval.
@@ -15,7 +15,7 @@ if [ ! -d "$DOTFILES_DIR" ]; then
   git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
 fi
 
-# Detect platform → nix `type` + `system`.
+# Detect platform -> nix `type` + `system`.
 case "$(uname -s)" in
   Darwin) type=darwin ; os=darwin ;;
   Linux)  type=home   ; os=linux  ;;
@@ -28,7 +28,7 @@ case "$(uname -m)" in
 esac
 
 # Register this machine (idempotent). Flakes only see git-tracked/staged files,
-# so stage it — otherwise the freshly-written host is invisible to nix eval.
+# so stage it - otherwise the freshly-written host is invisible to nix eval.
 host="$DOTFILES_DIR/hosts/$(whoami).nix"
 if [ ! -f "$host" ]; then
   echo "==> Registering this machine -> hosts/$(whoami).nix"

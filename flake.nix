@@ -1,5 +1,5 @@
 {
-  description = "Ricky's Mac baseline — nix-darwin + Home Manager (package & system layer only)";
+  description = "Ricky's Mac baseline - nix-darwin + Home Manager (package & system layer only)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -20,7 +20,7 @@
     # Mac (full system + user layer).
     mkDarwin = { system, username, ... }: nix-darwin.lib.darwinSystem {
       inherit system;
-      specialArgs = { inherit username; };                 # → host.nix
+      specialArgs = { inherit username; };                 # -> host.nix
       modules = [
         ./nix/host.nix
         home-manager.darwinModules.home-manager
@@ -28,7 +28,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-          home-manager.extraSpecialArgs = { inherit username; };   # → user.nix
+          home-manager.extraSpecialArgs = { inherit username; };   # -> user.nix
           home-manager.users.${username} = import ./nix/user.nix;
         }
       ];
@@ -37,11 +37,11 @@
     # Linux dev box (user layer only; macOS system defaults don't apply).
     mkHome = { system, username, ... }: home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.${system};
-      extraSpecialArgs = { inherit username; };            # → user.nix
+      extraSpecialArgs = { inherit username; };            # -> user.nix
       modules = [ ./nix/user.nix ];
     };
 
-    # TURNKEY: machines are auto-discovered from ./hosts/<login>.nix — bootstrap.sh
+    # TURNKEY: machines are auto-discovered from ./hosts/<login>.nix - bootstrap.sh
     # writes that file from the environment on a fresh box, so flake.nix is NEVER
     # edited per machine. Each host file is just data:
     #   { type = "darwin"|"home"; system = "<nix system>"; username = "<login>"; }

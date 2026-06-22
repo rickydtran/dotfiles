@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bootstrap the Mac's Nix layer: install Determinate Nix, then apply the flake
 # (nix-darwin + Home Manager). Safe to re-run. The shell/editor/tmux configs are
-# linked by Home Manager (see nix/user.nix) — no stow needed on the Mac.
+# linked by Home Manager (see nix/user.nix) - no stow needed on the Mac.
 set -euo pipefail
 
 DOTFILES_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && cd .. && pwd )

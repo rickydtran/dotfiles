@@ -12,11 +12,11 @@
   homebrew = {
     enable = true;
     # "uninstall" prunes any brew package/cask not declared here on each rebuild.
-    # ("zap" would also wipe their app data — too aggressive.)
+    # ("zap" would also wipe their app data - too aggressive.)
     onActivation.cleanup = "uninstall";
     taps = [ ];
 
-    # Mac-native / awkward-in-nix tooling — kept on brew deliberately.
+    # Mac-native / awkward-in-nix tooling - kept on brew deliberately.
     brews = [
       "colima"                        # mac VM for containers
       "docker"
@@ -25,11 +25,11 @@
       "lima-additional-guestagents"
       "iproute2mac"                   # mac shim for ip(8)
       "mingw-w64"                     # windows cross-toolchain
-      "mas"                           # App Store CLI — drives masApps below
-      # Fast-moving JS CLI — kept on brew (nixpkgs lags Google's near-daily releases).
+      "mas"                           # App Store CLI - drives masApps below
+      # Fast-moving JS CLI - kept on brew (nixpkgs lags Google's near-daily releases).
       # Per the "right ecosystem manager" rule, not nix.
       "gemini-cli"
-      # (buf + macchanger moved to nix/user.nix — no more third-party taps)
+      # (buf + macchanger moved to nix/user.nix - no more third-party taps)
     ];
 
     # GUI apps via cask. "Working core" filter: tools that define how you
@@ -55,7 +55,7 @@
       "microsoft-outlook"        # standalone cask (App Store build must be removed first so it sticks)
       "amazon-chime"
       "granola"
-      "windows-app"              # MS Remote Desktop — moved from App Store → cask
+      "windows-app"              # MS Remote Desktop - moved from App Store -> cask
       # notes / launcher / window mgmt
       "obsidian"
       "raycast"
@@ -77,15 +77,15 @@
       "mactex"
       "skim"
       "thaw"
-      # ── opt-in: borderline (personal/occasional) ──
+      # -- opt-in: borderline (personal/occasional) --
       # "spotify"
       # "obs"
       # "tradingview"
       # "microsoft-edge"
       # "balenaetcher"
       # "adguard"
-      # "microsoft-office"   # bundles Outlook → conflicts with App Store Outlook (masApps)
-      # ── opt-in: entertainment (not "working core") ──
+      # "microsoft-office"   # bundles Outlook -> conflicts with App Store Outlook (masApps)
+      # -- opt-in: entertainment (not "working core") --
       # "steam"
       # "runelite"
     ];
@@ -96,7 +96,7 @@
       "Strongbox"       = 897283731;    # password manager (no cask)
       "RunCat"          = 1429033973;   # menu-bar CPU monitor (no cask)
       "CleanMyKeyboard" = 6468120888;
-      "AdGuard for Safari"   = 1440147259;   # Safari extension (≠ standalone `adguard` cask)
+      "AdGuard for Safari"   = 1440147259;   # Safari extension (!= standalone `adguard` cask)
       "Obsidian Web Clipper" = 6720708363;   # Safari extension
     };
   };
@@ -104,10 +104,10 @@
   system.primaryUser = username;
   users.users.${username} = {
     home = "/Users/${username}";
-    shell = pkgs.zsh;   # login shell only — z4h still owns ALL zsh config (see user.nix note)
+    shell = pkgs.zsh;   # login shell only - z4h still owns ALL zsh config (see user.nix note)
   };
 
-  # macOS defaults — the layer stow can never reach. Tuned for fast key repeat + dev ergonomics.
+  # macOS defaults - the layer stow can never reach. Tuned for fast key repeat + dev ergonomics.
   system.defaults = {
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
