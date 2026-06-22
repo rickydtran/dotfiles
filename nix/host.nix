@@ -26,9 +26,8 @@
       "iproute2mac"                   # mac shim for ip(8)
       "mingw-w64"                     # windows cross-toolchain
       "mas"                           # App Store CLI — drives masApps below
-      # Fast-moving JS/npm CLIs — kept on brew on purpose (nixpkgs lags; ccusage absent
-      # entirely). Per the "right ecosystem manager" rule, not nix.
-      "ccusage"
+      # Fast-moving JS CLI — kept on brew (nixpkgs lags Google's near-daily releases).
+      # Per the "right ecosystem manager" rule, not nix.
       "gemini-cli"
       # (buf + macchanger moved to nix/user.nix — no more third-party taps)
     ];
