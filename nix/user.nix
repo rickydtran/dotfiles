@@ -24,8 +24,9 @@ in
 
   # Seeded from your actual `brew leaves`. Pure-CLI tools move here; brew keeps GUI/mac-native.
   home.packages = with pkgs; [
-    # shell + core (coreutils gives gls, which your ls aliases depend on)
-    coreutils
+    # shell + core. coreutils-PREFIXED gives `gls`/`gcat`/… (the `g` prefix the
+    # darwin ls/ll aliases in .zshrc rely on — same convention as brew coreutils).
+    coreutils-prefixed
     bash
     zsh
     tmux
