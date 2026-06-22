@@ -66,8 +66,7 @@
       # network / security
       "mullvad-vpn"
       "wireshark-app"
-      # "tailscale-app"   # MANUAL SWAP: App Store build is sandboxed; remove it first,
-      #                   # then uncomment — the cask is the fuller standalone build
+      "tailscale-app"            # standalone build (swapped off the sandboxed App Store version)
       # display / peripherals (ambient workflow)
       "betterdisplay"
       "mos"
@@ -101,7 +100,6 @@
       "CleanMyKeyboard" = 6468120888;
       "AdGuard for Safari"   = 1440147259;   # Safari extension (≠ standalone `adguard` cask)
       "Obsidian Web Clipper" = 6720708363;   # Safari extension
-      "Tailscale"            = 1475387142;   # installed App Store build (cask swap optional later)
     };
   };
 
