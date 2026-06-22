@@ -47,6 +47,8 @@ in
     gh
     git-filter-repo
     lazygit
+    delta             # syntax-highlighting diff pager (used by dsf())
+    gnupg             # gpg — for signing commits
 
     # net / sys
     curl
