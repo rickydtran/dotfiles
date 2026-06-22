@@ -7,12 +7,9 @@
     path = ~/sandbox/swxtchio/.gitconfig
 [rerere]
     enabled = false
+[commit]
+    gpgsign = false
 [column]
     ui = auto
 [branch]
     sort = committerdate
-[gpg]
-    format = ssh
-; machine-local: SSH signing key + commit.gpgsign=true (not in repo; absent => no signing)
-[include]
-    path = ~/.gitconfig.local
