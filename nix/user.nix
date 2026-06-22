@@ -1,4 +1,4 @@
-{ config, pkgs, username, ... }:
+{ config, pkgs, lib, username, ... }:
 
 # USER LAYER (Home Manager): reproducible CLI baseline + fonts + config symlinks.
 #
@@ -89,6 +89,13 @@ in
     # gemini-cli  → in nixpkgs but lags; fast-moving JS tooling → brew (host.nix)
     # ccusage     → not in nixpkgs (npm tool) → brew (host.nix)
     # lmstudio (lms) → not in nixpkgs; keeps its own installer (~/.lmstudio)
+  ]
+  # Platform-specific CLI tools (most Mac-specific stuff is GUI → host.nix instead).
+  ++ lib.optionals pkgs.stdenv.isLinux [
+    # strace  iproute2  …  (Linux-only)
+  ]
+  ++ lib.optionals pkgs.stdenv.isDarwin [
+    # mac-only CLI (rare)
   ];
 
   fonts.fontconfig.enable = true;
