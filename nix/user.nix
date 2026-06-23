@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username, ... }:
+{ config, pkgs, lib, username, inputs, ... }:
 
 # USER LAYER (Home Manager): reproducible CLI baseline + fonts + config symlinks.
 #
@@ -48,6 +48,7 @@ in
     git-filter-repo
     lazygit
     delta             # syntax-highlighting diff pager (used by dsf())
+    inputs.treehouse.packages.${pkgs.system}.default   # git-worktree manager (not in nixpkgs)
 
     # net / sys
     curl

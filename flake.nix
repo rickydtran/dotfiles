@@ -11,9 +11,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treehouse = {
+      url = "github:kunchenguid/treehouse";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, nix-darwin, home-manager, ... }:
   let
     inherit (nixpkgs) lib;
 
@@ -28,7 +32,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-          home-manager.extraSpecialArgs = { inherit username; };   # -> user.nix
+          home-manager.extraSpecialArgs = { inherit username inputs; };   # -> user.nix
           home-manager.users.${username} = import ./nix/user.nix;
         }
       ];
@@ -37,7 +41,7 @@
     # Linux dev box (user layer only; macOS system defaults don't apply).
     mkHome = { system, username, ... }: home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.${system};
-      extraSpecialArgs = { inherit username; };            # -> user.nix
+      extraSpecialArgs = { inherit username inputs; };            # -> user.nix
       modules = [ ./nix/user.nix ];
     };
 

@@ -60,7 +60,28 @@
       "inputs": {
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "treehouse": "treehouse"
+      }
+    },
+    "treehouse": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781942651,
+        "narHash": "sha256-8yfu4w74ysYLu29qesKQtT6XuVwaYnjpdHdal0lqfTg=",
+        "owner": "kunchenguid",
+        "repo": "treehouse",
+        "rev": "7e3fd5401e70cb498984057f5fe27710f74b7dc5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kunchenguid",
+        "repo": "treehouse",
+        "type": "github"
       }
     }
   },
