@@ -123,5 +123,10 @@ in
     ".gitconfig.inc".source = link "git/.gitconfig.inc";
     ".ssh/config".source    = link "ssh/.ssh/config";
     ".config/htop/htoprc".source = link "htop/.config/htop/htoprc";
+    # One agent-instructions source, symlinked into every AI agent's config path.
+    ".claude/CLAUDE.md".source          = link "AGENTS.md";
+    ".codex/AGENTS.md".source           = link "AGENTS.md";
+    ".gemini/GEMINI.md".source          = link "AGENTS.md";
+    ".config/opencode/AGENTS.md".source = link "AGENTS.md";
   };
 }
