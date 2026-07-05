@@ -51,7 +51,7 @@ if [ -x /run/current-system/sw/bin/darwin-rebuild ]; then
   sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$DOTFILES_DIR#$user"
 else
   # First run only: darwin-rebuild doesn't exist yet, bootstrap it from the flake input.
-  sudo "$NIX" run github:LnL7/nix-darwin#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$user"
+  sudo "$NIX" run github:nix-darwin/nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$user"
 fi
 
 echo "==> Done. Open a new terminal, then iterate with:  rebuild"

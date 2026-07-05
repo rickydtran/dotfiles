@@ -2,22 +2,26 @@
   description = "Ricky's Mac baseline - nix-darwin + Home Manager (package & system layer only)";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # Pinned to the 26.05 stable release (was nixpkgs-unstable) for fewer surprise
+    # breakages on rebuild. nixos-26.05 is cross-platform (mac + linux).
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nix-darwin = {
-      url = "github:LnL7/nix-darwin";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Manages Homebrew itself declaratively (the brew install + taps), not just its packages.
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     treehouse = {
       url = "github:kunchenguid/treehouse";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ nixpkgs, nix-darwin, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, nix-darwin, home-manager, nix-homebrew, ... }:
   let
     inherit (nixpkgs) lib;
 
@@ -27,6 +31,7 @@
       specialArgs = { inherit username; };                 # -> host.nix
       modules = [
         ./nix/host.nix
+        nix-homebrew.darwinModules.nix-homebrew
         home-manager.darwinModules.home-manager
         {
           home-manager.useGlobalPkgs = true;

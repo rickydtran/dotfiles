@@ -9,6 +9,13 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # Manage the Homebrew installation itself (adopt the existing one rather than erroring).
+  nix-homebrew = {
+    enable = true;
+    user = username;
+    autoMigrate = true;
+  };
+
   homebrew = {
     enable = true;
     # "uninstall" prunes any brew package/cask not declared here on each rebuild.
