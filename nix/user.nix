@@ -71,6 +71,8 @@ in
     uv
     rustup
     golangci-lint
+    cargo-deny        # rust dependency/license linter
+    shellcheck        # shell script linter
 
     # cloud / infra
     azure-cli

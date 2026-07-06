@@ -55,6 +55,7 @@
       # AI
       "chatgpt"
       "claude"
+      "opensuperwhisper"         # voice-to-text
       # comms / work
       "slack"
       "zoom"
