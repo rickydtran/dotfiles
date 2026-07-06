@@ -5,6 +5,7 @@ These are common instructions for Ricky's agents across all scenarios.
 ## General Guidelines
 
 - Write concise commit messages that still let an AI reading `git log` infer what changed and why without opening the diff.
+- Never auto-add your agent name as a commit co-author.
 - Comments explain the non-obvious why of code that exists.
   Don't comment the absence of something, leave tombstones for removed code, or assert rationale that drifts stale; the diff and `git log` carry that.
 - Never use the em dash. Use a plain hyphen instead.
