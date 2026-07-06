@@ -49,7 +49,7 @@ map <c-a> <esc>ggVG$<cr>
 syntax enable
 " silent! colorscheme onedark
 set background=dark
-silent! colorscheme rosepine
+silent! colorscheme rosepine_moon
 " set noeb vb t_vb= " Disables chime
 set noerrorbells novisualbell " Turn off visual and audbile bells
 set nobackup nowritebackup noswapfile " Turn off backup files
@@ -88,4 +88,4 @@ set showcmd " Show size of visual selection
 
 " let g:airline_theme='onedark'
 " let g:airline_solarized_bg='light'
-let g:lightline = { 'colorscheme': 'rosepine' }
+let g:lightline = { 'colorscheme': 'rosepine_moon' }
