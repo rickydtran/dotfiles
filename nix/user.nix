@@ -130,5 +130,9 @@ in
     ".codex/AGENTS.md".source           = link "AGENTS.md";
     ".gemini/GEMINI.md".source          = link "AGENTS.md";
     ".config/opencode/AGENTS.md".source = link "AGENTS.md";
+  } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+    # Ghostty reads its config from macOS app-support (mac-only path).
+    "Library/Application Support/com.mitchellh.ghostty/config.ghostty".source =
+      link "ghostty/config.ghostty";
   };
 }

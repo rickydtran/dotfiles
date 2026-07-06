@@ -1,0 +1,56 @@
+# keybindings
+keybind = cmd+a=text:\x01
+keybind = cmd+b=text:\x02
+keybind = cmd+c=text:\x03
+keybind = cmd+d=text:\x04
+keybind = cmd+e=text:\x05
+keybind = cmd+f=text:\x06
+keybind = cmd+g=text:\x07
+keybind = cmd+h=text:\x08
+keybind = cmd+i=text:\x09
+keybind = cmd+j=text:\x0A
+keybind = cmd+k=text:\x0B
+keybind = cmd+l=text:\x0C
+keybind = cmd+m=text:\x0D
+keybind = cmd+n=text:\x0E
+keybind = cmd+o=text:\x0F
+keybind = cmd+p=text:\x10
+keybind = cmd+q=text:\x11
+keybind = cmd+r=text:\x12
+keybind = cmd+s=text:\x13
+keybind = cmd+u=text:\x15
+keybind = cmd+w=text:\x17
+keybind = cmd+x=text:\x18
+keybind = cmd+y=text:\x19
+keybind = cmd+z=text:\x1A
+
+macos-option-as-alt = true
+
+# Disable auto copy on select
+copy-on-select = false
+
+# 1.3: explicit scrollbar off
+scrollbar = never
+
+# cursor
+shell-integration-features = no-cursor
+cursor-style-blink = false
+
+# typography
+# font-family = JetBrains Mono
+font-size = 12  
+font-thicken=true
+font-thicken-strength=1
+adjust-cell-height=1
+
+# aesthetics
+macos-titlebar-style = native
+macos-icon = retro
+
+# Automatic dark/light switching
+# theme = dark:Rose Pine,light:Rose Pine Dawn
+
+# Or set individual themes
+# theme = Rose Pine
+theme = Rose Pine Moon
+# theme = Rose Pine Dawn
