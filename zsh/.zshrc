@@ -70,6 +70,11 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.config/htop/htoprc' '~/.vim
 # example. If you don't plan to use Oh My Zsh, delete this line.
 z4h install ohmyzsh/ohmyzsh || return
 
+# Extra completions (must be on fpath before z4h init runs compinit).
+# _brew lives here because nix-homebrew keeps it in the nix store, not on the
+# Homebrew prefix's site-functions, so z4h can't find it the usual way.
+fpath=(~/.zsh/completions $fpath)
+
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 # initialize Zsh. After this point console I/O is unavailable until Zsh
 # is fully initialized. Everything that requires user interaction or can
