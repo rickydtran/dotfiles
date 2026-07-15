@@ -125,6 +125,7 @@ in
     ".gitconfig.inc".source = link "git/.gitconfig.inc";
     ".ssh/config".source    = link "ssh/.ssh/config";
     ".config/htop/htoprc".source = link "htop/.config/htop/htoprc";
+    ".config/wezterm/wezterm.lua".source = link "wezterm/wezterm.lua";
     ".zsh/completions/_brew".source = link "zsh/completions/_brew";  # brew tab-completion (see .zshrc fpath)
     # One agent-instructions source, symlinked into every AI agent's config path.
     ".claude/CLAUDE.md".source          = link "AGENTS.md";
