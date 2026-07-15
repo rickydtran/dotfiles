@@ -58,6 +58,10 @@ zstyle ':z4h:ssh:testgpu-*'           enable 'yes'
 zstyle ':z4h:ssh:*samc*'              enable 'yes'
 zstyle ':z4h:ssh:*runner*'            enable 'yes'
 zstyle ':z4h:ssh:*bastion*'           enable 'yes'
+zstyle ':z4h:ssh:*omen*'              enable 'yes'
+zstyle ':z4h:ssh:*jett*'              enable 'yes'
+zstyle ':z4h:ssh:*reyna*'             enable 'yes'
+zstyle ':z4h:ssh:*maas*'              enable 'yes'
 
 # Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
