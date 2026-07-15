@@ -26,6 +26,27 @@ There is no per-machine config to edit by hand.
 
 The right config is selected automatically with `#$(whoami)`.
 
+### WSL (Windows)
+
+WSL is just Linux, so it takes the `setup/linux.sh` path.
+Do the WSL-specific prep first, then bootstrap as above.
+
+1. Install a distro from Windows: `wsl --install -d Ubuntu`.
+2. Enable systemd (the Nix daemon needs it) - inside the distro, put this in `/etc/wsl.conf`:
+
+   ```ini
+   [boot]
+   systemd=true
+   ```
+
+3. Restart the distro from Windows: `wsl --shutdown`, then reopen it.
+4. `sudo apt install -y git curl`, then run the clone + `bootstrap.sh` from above.
+5. Open a fresh shell so Nix is on `PATH` (`exec zsh -l`).
+
+WezTerm is a *Windows* app, so it does not read the config Home Manager links inside the distro.
+Install it on Windows (`winget install wez.wezterm`), install `Hack Nerd Font` on Windows too, then create `%USERPROFILE%\.config\wezterm\wezterm.lua` from [`wezterm/windows-loader.lua`](wezterm/windows-loader.lua) (edit the distro name + login).
+That stub redirects Windows WezTerm at the repo's `wezterm/wezterm.lua`, whose `is_windows` branch selects the WSL domain and drops you into the distro shell.
+
 ## How it works
 
 Three layers, split by what changes and where:

@@ -1,0 +1,11 @@
+-- Windows loader stub for WezTerm + WSL.
+--
+-- WezTerm runs as a Windows GUI app, so it reads its config from the Windows
+-- profile, NOT from inside the distro. Home Manager can't reach the Windows
+-- filesystem, so this one file is placed by hand to redirect Windows WezTerm at
+-- the repo's single source of truth living inside WSL.
+--
+-- Install: copy this to  %USERPROFILE%\.config\wezterm\wezterm.lua  on Windows,
+-- then edit the distro name ("Ubuntu") and login ("ricky") below to match yours.
+-- The target file's `is_windows` branch handles the WSL domain + acrylic bg.
+return dofile [[\\wsl.localhost\Ubuntu\home\ricky\.dotfiles\wezterm\wezterm.lua]]
