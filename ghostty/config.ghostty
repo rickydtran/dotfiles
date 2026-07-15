@@ -37,15 +37,21 @@ shell-integration-features = no-cursor
 cursor-style-blink = false
 
 # typography
-# font-family = JetBrains Mono
-font-size = 12  
+font-family = Hack Nerd Font Mono
+font-size = 12
 font-thicken=true
 font-thicken-strength=1
 adjust-cell-height=1
 
 # aesthetics
-macos-titlebar-style = native
+# Borderless: no titlebar, tab bar only appears with >1 tab.
+macos-titlebar-style = hidden
+window-show-tab-bar = auto
 macos-icon = retro
+
+# Translucent, blurred background.
+background-opacity = 0.8
+background-blur = 50
 
 # Automatic dark/light switching
 # theme = dark:Rose Pine,light:Rose Pine Dawn
