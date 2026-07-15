@@ -103,7 +103,7 @@
     # Requires "mas" (above) + Apple ID sign-in on a fresh machine.
     masApps = {
       "Strongbox"       = 897283731;    # password manager (no cask)
-      "RunCat"          = 1429033973;   # menu-bar CPU monitor (no cask)
+      "RunCat Neo"      = 6757801838;   # menu-bar CPU monitor (no cask)
       "CleanMyKeyboard" = 6468120888;
       "AdGuard for Safari"   = 1440147259;   # Safari extension (!= standalone `adguard` cask)
       "Obsidian Web Clipper" = 6720708363;   # Safari extension
