@@ -81,6 +81,7 @@
       "scroll-reverser"
       "logitune"
       "logi-options+"
+      "asix-ax88179"             # USB-to-Gigabit-Ethernet adapter driver (dock/dongle)
       # docs
       "mactex"
       "skim"
