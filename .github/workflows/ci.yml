@@ -8,12 +8,12 @@ on:
 
 jobs:
   darwin:
-    runs-on: macos-latest          # Apple Silicon -> aarch64-darwin, matches hosts/ricky.nix
+    runs-on: macos-latest          # Apple Silicon -> aarch64-darwin, matches hosts/swx-ricky-mbp.nix
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - name: Build the darwin system closure
-        run: nix build --print-build-logs '.#darwinConfigurations.ricky.system'
+        run: nix build --print-build-logs '.#darwinConfigurations.swx-ricky-mbp.system'
 
   linux:
     runs-on: ubuntu-latest         # x86_64-linux

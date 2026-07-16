@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One-shot entry point. Clones the repo, auto-registers THIS machine as
-# hosts/<login>.nix (detected from the environment), then hands off to the
+# hosts/<hostkey>.nix (detected from the environment), then hands off to the
 # per-OS Nix bootstrap. No per-machine flake.nix editing - ever.
 #
 # The impurity lives HERE, in the shell (detect env, write a file). The flake
@@ -15,6 +15,9 @@ if [ ! -d "$DOTFILES_DIR" ]; then
   git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
 fi
 
+# shellcheck source=setup/lib.sh
+. "$DOTFILES_DIR/setup/lib.sh"
+
 # Detect platform -> nix `type` + `system`.
 case "$(uname -s)" in
   Darwin) type=darwin ; os=darwin ;;
@@ -27,11 +30,13 @@ case "$(uname -m)" in
   *) echo "Unsupported arch: $(uname -m)" >&2; exit 1 ;;
 esac
 
-# Register this machine (idempotent). Flakes only see git-tracked/staged files,
+# Register this machine (idempotent), keyed by hostname so a shared login on a
+# second box doesn't clobber the first. Flakes only see git-tracked/staged files,
 # so stage it - otherwise the freshly-written host is invisible to nix eval.
-host="$DOTFILES_DIR/hosts/$(whoami).nix"
+key="$(hostkey)"
+host="$DOTFILES_DIR/hosts/$key.nix"
 if [ ! -f "$host" ]; then
-  echo "==> Registering this machine -> hosts/$(whoami).nix"
+  echo "==> Registering this machine -> hosts/$key.nix"
   mkdir -p "$DOTFILES_DIR/hosts"
   printf '{ type = "%s"; system = "%s-%s"; username = "%s"; }\n' \
     "$type" "$arch" "$os" "$(whoami)" > "$host"

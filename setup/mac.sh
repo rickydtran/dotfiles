@@ -5,6 +5,8 @@
 set -euo pipefail
 
 DOTFILES_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && cd .. && pwd )
+# shellcheck source=setup/lib.sh
+. "$DOTFILES_DIR/setup/lib.sh"
 
 # 1. Install Determinate Nix if missing. The install.determinate.sh helper host is
 #    DNS-blocked on some networks, so fetch the installer binary straight from GitHub
@@ -43,15 +45,15 @@ if ! command -v brew &>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# 4. Apply the flake. The config is keyed by login, so select it with whoami.
+# 4. Apply the flake. The config is keyed by hostname, so select it with hostkey.
 #    sudo resets PATH (secure_path), so invoke nix by full path.
-user="$(whoami)"
-echo "==> Applying nix-darwin flake #$user (sudo)"
+key="$(hostkey)"
+echo "==> Applying nix-darwin flake #$key (sudo)"
 if [ -x /run/current-system/sw/bin/darwin-rebuild ]; then
-  sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$DOTFILES_DIR#$user"
+  sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$DOTFILES_DIR#$key"
 else
   # First run only: darwin-rebuild doesn't exist yet, bootstrap it from the flake input.
-  sudo "$NIX" run github:nix-darwin/nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$user"
+  sudo "$NIX" run github:nix-darwin/nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$key"
 fi
 
 echo "==> Done. Open a new terminal, then iterate with:  rebuild"

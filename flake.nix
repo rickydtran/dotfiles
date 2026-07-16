@@ -50,9 +50,10 @@
       modules = [ ./nix/user.nix ];
     };
 
-    # TURNKEY: machines are auto-discovered from ./hosts/<login>.nix - bootstrap.sh
-    # writes that file from the environment on a fresh box, so flake.nix is NEVER
-    # edited per machine. Each host file is just data:
+    # TURNKEY: machines are auto-discovered from ./hosts/<hostkey>.nix - bootstrap.sh
+    # writes that file from the environment on a fresh box (keyed by hostname, so a
+    # shared login on two boxes doesn't collide), so flake.nix is NEVER edited per
+    # machine. Each host file is just data:
     #   { type = "darwin"|"home"; system = "<nix system>"; username = "<login>"; }
     hosts = lib.mapAttrs'
       (file: _: lib.nameValuePair
@@ -62,9 +63,9 @@
         (builtins.readDir ./hosts));
     ofType = t: lib.filterAttrs (_: cfg: cfg.type == t) hosts;
   in {
-    # Apply on a Mac:       darwin-rebuild switch --flake ~/.dotfiles#$(whoami)
+    # Apply on a Mac:       darwin-rebuild switch --flake ~/.dotfiles#<hostname>
     darwinConfigurations = lib.mapAttrs (_: mkDarwin) (ofType "darwin");
-    # Apply on a Linux box: home-manager switch --flake ~/.dotfiles#$(whoami)
+    # Apply on a Linux box: home-manager switch --flake ~/.dotfiles#<hostname>
     homeConfigurations   = lib.mapAttrs (_: mkHome)   (ofType "home");
   };
 }

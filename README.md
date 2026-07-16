@@ -9,7 +9,7 @@ Dotfiles are symlinked into place by Home Manager (no stow on the Mac); [zsh4hum
 ## Bootstrap a new machine
 
 Clone the repo and run the bootstrap.
-It detects the OS and login, registers the machine, installs Nix, and applies the config:
+It detects the OS, login, and hostname, registers the machine, installs Nix, and applies the config:
 
 ```bash
 git clone https://github.com/rickydtran/dotfiles ~/.dotfiles
@@ -17,14 +17,14 @@ bash ~/.dotfiles/bootstrap.sh
 ```
 
 There is no per-machine config to edit by hand.
-`bootstrap.sh` writes `hosts/<login>.nix` from the detected environment, then hands off:
+`bootstrap.sh` writes `hosts/<hostname>.nix` from the detected environment, then hands off:
 
 | OS | Handler | What it does |
 |----|---------|--------------|
 | macOS | `setup/mac.sh` | install Determinate Nix + Homebrew, then `darwin-rebuild switch` |
 | Linux | `setup/linux.sh` | install Determinate Nix, then `home-manager switch` |
 
-The right config is selected automatically with `#$(whoami)`.
+The right config is selected automatically by hostname (machines are keyed by hostname, not login, so the same login on two boxes doesn't collide).
 
 ### WSL (Windows)
 
@@ -55,9 +55,9 @@ Three layers, split by what changes and where:
 |-------|------|-------|------|
 | Machine | `nix/host.nix` | macOS only | Homebrew brews/casks, App Store apps (`mas`), macOS system defaults |
 | User | `nix/user.nix` | macOS + Linux | CLI packages, fonts, and dotfile symlinks |
-| Machines | `hosts/<login>.nix` | per machine | `{ type, system, username }`, auto-discovered by the flake |
+| Machines | `hosts/<hostname>.nix` | per machine | `{ type, system, username }`, auto-discovered by the flake |
 
-`flake.nix` reads `hosts/` and builds one `darwinConfigurations` or `homeConfigurations` entry per file, keyed by login.
+`flake.nix` reads `hosts/` and builds one `darwinConfigurations` or `homeConfigurations` entry per file, keyed by hostname.
 Adding a machine just means running `bootstrap.sh`; it writes the host file, so `flake.nix` itself is never edited per machine.
 
 The actual config files (`zsh/`, `vim/`, `tmux/`, `git/`, ...) live in the repo and are symlinked live, so editing them takes effect immediately with no rebuild.
@@ -67,8 +67,8 @@ The actual config files (`zsh/`, `vim/`, `tmux/`, `git/`, ...) live in the repo 
 Apply changes after editing `nix/*`:
 
 ```bash
-rebuild                                              # macOS (alias for darwin-rebuild switch)
-home-manager switch --flake ~/.dotfiles#$(whoami)    # Linux
+rebuild                                                          # macOS (alias for darwin-rebuild switch)
+home-manager switch --flake ~/.dotfiles#$(hostname -s | tr A-Z a-z)   # Linux
 ```
 
 | To change | Edit |
@@ -83,7 +83,8 @@ home-manager switch --flake ~/.dotfiles#$(whoami)    # Linux
 
 ```
 flake.nix          entry point; discovers hosts/, wires nix-darwin + Home Manager
-hosts/<login>.nix  one per machine (type, system, username), written by bootstrap
+hosts/<host>.nix   one per machine (type, system, username), written by bootstrap
+setup/lib.sh       shared bootstrap helpers (hostkey derivation)
 nix/host.nix       macOS machine layer
 nix/user.nix       shared user layer (packages, fonts, dotfile links)
 setup/mac.sh       macOS bootstrap

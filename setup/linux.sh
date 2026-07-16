@@ -5,6 +5,8 @@
 set -euo pipefail
 
 DOTFILES_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && cd .. && pwd )
+# shellcheck source=setup/lib.sh
+. "$DOTFILES_DIR/setup/lib.sh"
 
 # 1. Install Determinate Nix if missing (GitHub release; install.determinate.sh may be DNS-blocked).
 if ! command -v nix &>/dev/null; then
@@ -29,10 +31,10 @@ if ! command -v nix &>/dev/null; then
 fi
 command -v nix >/dev/null || { echo "nix not on PATH - open a new shell and re-run." >&2; exit 1; }
 
-# 3. Apply Home Manager. The config is keyed by login, so select it with whoami.
+# 3. Apply Home Manager. The config is keyed by hostname, so select it with hostkey.
 #    -b backup handles pre-existing dotfiles.
-user="$(whoami)"
-echo "==> Applying Home Manager #$user"
-nix run home-manager/master -- switch -b backup --flake "$DOTFILES_DIR#$user"
+key="$(hostkey)"
+echo "==> Applying Home Manager #$key"
+nix run home-manager/master -- switch -b backup --flake "$DOTFILES_DIR#$key"
 
-echo "==> Done. Open a new shell, then iterate with: home-manager switch --flake ~/.dotfiles#$user"
+echo "==> Done. Open a new shell, then iterate with: home-manager switch --flake ~/.dotfiles#$key"
