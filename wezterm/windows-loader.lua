@@ -11,11 +11,12 @@
 -- `is_windows` branch runs (WSL domain + acrylic).
 --
 -- Install: copy this to  %USERPROFILE%\.config\wezterm\wezterm.lua  on Windows,
--- then edit the distro ("Debian") and path below to match yours.
+-- then edit the home path below to match your login. Uses the DEFAULT WSL distro;
+-- add '-d', '<name>' before '--' if you run more than one.
 local wezterm = require 'wezterm'
 
 local ok, stdout, stderr = wezterm.run_child_process {
-  'wsl.exe', '-d', 'Debian', '--',
+  'wsl.exe', '--',
   'cat', '/home/ricky/.dotfiles/wezterm/wezterm.lua',
 }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bootstrap a Linux dev box: install Determinate Nix, then apply Home Manager
 # (the same nix/user.nix the Mac uses). No stow - HM owns the dotfile links.
-# Verified on WSL (Debian, x86_64) as well as the Mac path (setup/mac.sh).
+# Verified on WSL (Ubuntu, x86_64) as well as the Mac path (setup/mac.sh).
 set -euo pipefail
 
 DOTFILES_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && cd .. && pwd )
