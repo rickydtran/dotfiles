@@ -41,17 +41,13 @@ if is_darwin then
 end
 
 if is_windows then
-  -- WezTerm runs on Windows for WSL, not inside the distro. Auto-discover every
-  -- installed distro as a domain and default to the first, so opening WezTerm
-  -- drops straight into the WSL shell (z4h/zsh) instead of PowerShell. Force the
-  -- Linux home dir (not the Windows-mapped cwd) so new tabs open at $HOME.
-  config.wsl_domains = wezterm.default_wsl_domains()
-  for _, dom in ipairs(config.wsl_domains) do
-    dom.default_cwd = '/home/ricky'
-  end
-  if #config.wsl_domains > 0 then
-    config.default_domain = config.wsl_domains[1].name
-  end
+  -- WezTerm runs on Windows for WSL, not inside the distro. Launch the default
+  -- distro's login shell via `wsl ~` so opening WezTerm drops straight into the
+  -- WSL shell (z4h/zsh) at $HOME. `wsl ~` forces the Linux home regardless of the
+  -- cwd WezTerm would otherwise pass (an inherited Windows/macOS path the distro
+  -- can't chdir to, which lands you in `/`). The launcher (Ctrl+Shift+L) still
+  -- auto-lists installed distros for explicit per-distro tabs.
+  config.default_prog = { 'wsl.exe', '~' }
 
   -- Windows equivalent of the macOS translucency/blur above.
   config.window_background_opacity = 0.9
