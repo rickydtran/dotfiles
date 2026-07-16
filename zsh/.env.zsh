@@ -1,5 +1,5 @@
 # uv
-export PATH="/Users/ricky/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # rust
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
