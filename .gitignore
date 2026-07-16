@@ -1,2 +1,10 @@
 result
 result-*
+
+# Home Manager writes *.backup when a file is "in the way"; never commit those.
+*.backup
+
+# ssh runtime state that can land in ssh/.ssh/ if ~/.ssh is (mis)linked into the repo.
+ssh/.ssh/known_hosts
+ssh/.ssh/known_hosts.old
+ssh/.ssh/agent.env

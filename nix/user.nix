@@ -107,6 +107,10 @@ in
 
   fonts.fontconfig.enable = true;
 
+  # Install the `home-manager` CLI so the documented iterate command works
+  # (the Linux bootstrap otherwise only reaches HM via `nix run`).
+  programs.home-manager.enable = true;
+
   home.sessionVariables = {
     EDITOR = "nvim";
   };

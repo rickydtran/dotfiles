@@ -67,8 +67,8 @@ The actual config files (`zsh/`, `vim/`, `tmux/`, `git/`, ...) live in the repo 
 Apply changes after editing `nix/*`:
 
 ```bash
-rebuild                                                          # macOS (alias for darwin-rebuild switch)
-home-manager switch --flake ~/.dotfiles#$(hostname -s | tr A-Z a-z)   # Linux
+rebuild                                                            # macOS (alias for darwin-rebuild switch)
+home-manager switch --flake "$HOME/.dotfiles#$(hostname -s | tr A-Z a-z)"   # Linux (quote it: zsh globs the '#')
 ```
 
 | To change | Edit |

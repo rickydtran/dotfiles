@@ -339,6 +339,14 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
     fi
 fi
 
+# Nix (Determinate): z4h sets no_global_rcs in .zshenv, which skips /etc/zshrc
+# where the installer put its nix hook - so put nix + the user/HM profile on PATH
+# here instead. Idempotent; harmless on the Mac (already on PATH).
+if [ -z "${__NIX_PROFILE_SOURCED-}" ] && [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  export __NIX_PROFILE_SOURCED=1
+fi
+
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
