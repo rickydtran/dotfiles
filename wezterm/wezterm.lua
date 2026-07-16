@@ -9,7 +9,10 @@ local is_darwin = wezterm.target_triple:find 'darwin' ~= nil
 local is_windows = wezterm.target_triple:find 'windows' ~= nil
 
 -- Shared appearance / typography (all platforms).
-config.font = wezterm.font 'Hack Nerd Font'
+config.font = wezterm.font_with_fallback {
+  'Hack Nerd Font',       -- primary (Nix installs this on Mac + Linux)
+  'Hack Nerd Font Mono',  -- Windows winget often installs only this variant
+}
 config.font_size = 12
 config.color_scheme = 'rose-pine-moon'
 config.default_cursor_style = 'SteadyBlock'   -- steady (non-blinking) block
