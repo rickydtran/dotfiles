@@ -43,8 +43,12 @@ end
 if is_windows then
   -- WezTerm runs on Windows for WSL, not inside the distro. Auto-discover every
   -- installed distro as a domain and default to the first, so opening WezTerm
-  -- drops straight into the WSL shell (z4h/zsh) instead of PowerShell.
+  -- drops straight into the WSL shell (z4h/zsh) instead of PowerShell. Force the
+  -- Linux home dir (not the Windows-mapped cwd) so new tabs open at $HOME.
   config.wsl_domains = wezterm.default_wsl_domains()
+  for _, dom in ipairs(config.wsl_domains) do
+    dom.default_cwd = '/home/ricky'
+  end
   if #config.wsl_domains > 0 then
     config.default_domain = config.wsl_domains[1].name
   end
